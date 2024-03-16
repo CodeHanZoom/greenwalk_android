@@ -23,7 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.codehanzoom.greenwalk.Greeting
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
 @Composable
