@@ -1,7 +1,7 @@
-package com.codehanzoom.greenwalk.PublicCompose
+package com.codehanzoom.greenwalk.publicCompose
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -17,31 +17,31 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
-
 @Composable
-fun MaxWidthButton(title: String ) {
+fun SmallButton(title: String) {
     Button(
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color(0xff8CB369)
         ),
         modifier = Modifier
-            .fillMaxWidth()
-            .height(50.dp),
+            .size(100.dp, 40.dp)
+            .padding(0.dp),
         onClick = { /*TODO*/ }) {
         Text(
             text = title,
             fontFamily = FontFamily.Monospace,
             fontWeight = FontWeight.Bold,
-            fontSize = 26.sp,
+            fontSize = 14.sp,
             textAlign = TextAlign.Center,
         )
     }
 }
+
 @Preview(showBackground = true)
 @Composable
-fun MaxWidthButtonPreview() {
+fun SmallButtonPreview() {
     GreenWalkTheme {
-        MaxWidthButton("시작하기")
+        SmallButton("기부하기")
     }
 }
