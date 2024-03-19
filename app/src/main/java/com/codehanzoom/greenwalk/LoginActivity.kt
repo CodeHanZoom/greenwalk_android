@@ -53,6 +53,7 @@ fun LoginActivity() {
         BottomContainer()
     }
 }
+
 @Composable
 fun Logo() {
     Row(
@@ -68,6 +69,7 @@ fun Logo() {
         )
     }
 }
+
 @Composable
 fun CumstomTextField(title: String) {
     var value by remember { mutableStateOf("") }
@@ -84,18 +86,24 @@ fun CumstomTextField(title: String) {
             .padding(horizontal = 20.dp)
             .fillMaxWidth(),
         value = value,
-        onValueChange = {value = it},
-        keyboardOptions = if (title == "이메일"){
+        onValueChange = { value = it },
+        keyboardOptions = if (title == "이메일") {
             KeyboardOptions(keyboardType = KeyboardType.Email)
         } else {
             KeyboardOptions(keyboardType = KeyboardType.Password)
         },
-        visualTransformation = if (title == "이메일"){
+        visualTransformation = if (title == "이메일") {
             VisualTransformation.None
         } else {
             PasswordVisualTransformation()
         },
-        placeholder = { Text(text = title) },
+        placeholder = {
+            if (title == "이메일") {
+                Text(text = "이메일을 입력해 주세요")
+            } else {
+                Text(text = "비밀번호를 입력해 주세요")
+            }
+        },
         singleLine = true,
         colors = TextFieldDefaults.colors(
             unfocusedContainerColor = Color.Transparent,
@@ -107,6 +115,7 @@ fun CumstomTextField(title: String) {
         )
     )
 }
+
 @Composable
 fun BottomContainer() {
     Row(
@@ -114,7 +123,7 @@ fun BottomContainer() {
         modifier = Modifier
             .fillMaxWidth()
             .height(20.dp)
-    ){
+    ) {
         Text(
             text = "아이디 찾기",
             fontWeight = FontWeight.W600,
@@ -144,6 +153,7 @@ fun BottomContainer() {
         )
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun LoginActivityPreview() {
