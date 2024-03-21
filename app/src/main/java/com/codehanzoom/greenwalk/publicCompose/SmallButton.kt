@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.sp
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
 @Composable
-fun SmallButton(title: String) {
+fun SmallButton(title: String, modifier: Modifier? = null) {
     Button(
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(
