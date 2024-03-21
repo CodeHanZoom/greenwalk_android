@@ -1,4 +1,9 @@
+package com.codehanzoom.greenwalk
 
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 import android.util.DisplayMetrics
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -83,7 +88,11 @@ fun NavigationGraph(navController: NavHostController) {
     }
 }
 
-
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            GreenWalkTheme {
                 Main()
             }
         }
