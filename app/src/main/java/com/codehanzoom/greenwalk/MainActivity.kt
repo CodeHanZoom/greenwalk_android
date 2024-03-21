@@ -1,9 +1,5 @@
-package com.codehanzoom.greenwalk
 
-import android.os.Bundle
 import android.util.DisplayMetrics
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,7 +42,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.codehanzoom.greenwalk.R
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
+
 
 sealed class BottomNavItem(
     val title: Int, val icon: Int, val screenRoute: String
@@ -85,11 +83,7 @@ fun NavigationGraph(navController: NavHostController) {
     }
 }
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            GreenWalkTheme {
+
                 Main()
             }
         }
