@@ -9,12 +9,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.codehanzoom.greenwalk.ui.theme.GW_Typography
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
 @Composable
@@ -30,10 +28,9 @@ fun SmallButton(title: String) {
         onClick = { /*TODO*/ }) {
         Text(
             text = title,
-            fontFamily = FontFamily.Monospace,
-            fontWeight = FontWeight.Bold,
-            fontSize = 14.sp,
-            textAlign = TextAlign.Center,
+            style = GW_Typography.labelSmall,
+            color = Color.White,
+            textAlign = TextAlign.Center
         )
     }
 }
@@ -42,6 +39,6 @@ fun SmallButton(title: String) {
 @Composable
 fun SmallButtonPreview() {
     GreenWalkTheme {
-        SmallButton("기부하기")
+        SmallButton("Aaㄱ1")
     }
 }
