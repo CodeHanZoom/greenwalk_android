@@ -11,6 +11,8 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 // GreenWalk Project Colosrs
+
+// Theme Color
 val GW_Green100 = Color(0xFF8CB369)
 val GW_Red100 = Color(0xFFBC4B51)
 val GW_Green200 = Color(0xFF5B8E7D)
