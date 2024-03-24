@@ -1,6 +1,5 @@
 package com.codehanzoom.greenwalk
 
-import android.util.DisplayMetrics
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,15 +14,13 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,13 +29,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.codehanzoom.greenwalk.publicCompose.LargeButton
+import com.codehanzoom.greenwalk.ui.theme.GreenMain
+import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
 @Composable
 fun Main() {
@@ -58,7 +60,6 @@ fun Main() {
                 .fillMaxHeight()
         ) {
             NavigationGraph(navController = navController)
-            ploggingButton()
         }
     }
 }
@@ -90,8 +91,8 @@ fun BottomNavigation(navController: NavHostController) {
                             .height(26.dp)
                     )
                 },
-                label = { Text(stringResource(id = item.title), fontSize = 9.sp) },
-                selectedContentColor = MaterialTheme.colors.primary,
+//                label = { Text(stringResource(id = item.title), fontSize = 9.sp) },
+                selectedContentColor = GreenMain,
                 unselectedContentColor = Color.Gray,
                 selected = currentRoute == item.screenRoute,
                 alwaysShowLabel = false,
@@ -117,6 +118,7 @@ fun HomeScreen() {
         modifier = Modifier
             .fillMaxSize()
             .padding(10.dp)
+            .verticalScroll(rememberScrollState())
     ) {
         areaMyInfo(name = "나희수", ploggingCount = 328, grade = "GOLD")
 
@@ -127,6 +129,7 @@ fun HomeScreen() {
         areaListOfDonations()
     }
 
+    ploggingButton()
 }
 
 @Composable
@@ -249,16 +252,7 @@ fun areaListOfDonations() {
                     Text("500P")
                 }
 
-                Button(
-                    onClick = { },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color("#8CB369".toColorInt()),
-                        contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(10)
-                ) {
-                    Text("기부하기")
-                }
+                LargeButton("기부하기")
             }
         }
     }
@@ -266,18 +260,26 @@ fun areaListOfDonations() {
 
 @Composable
 fun ploggingButton() {
-    val displayMetrics = DisplayMetrics()
-//    val windowManager = getSystemServices(WINDOW_SERVICE) as WindowManager
-//    windowManager.defaultDisplay.getMetrics(displayMetrics)
     FloatingActionButton(
         modifier = Modifier
             .width(400.dp)
             .height(40.dp)
             .offset(10.dp, 660.dp),
-        onClick = {
-
-        }
+        onClick = { /* TODO */ },
+        containerColor = Color(0xff8CB369),
+        contentColor = Color.White
     ) {
-        Text(text = "플로깅 시작하기")
+        Text(text = "플로깅 시작하기",
+            style = TextStyle(fontWeight = FontWeight.Bold,
+                fontSize = 20.sp)
+        )
+    }
+}
+
+@Composable
+@Preview
+fun PreviewHome() {
+    GreenWalkTheme {
+        Main()
     }
 }
