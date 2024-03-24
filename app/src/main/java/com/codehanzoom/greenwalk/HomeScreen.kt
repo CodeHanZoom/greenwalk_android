@@ -1,5 +1,6 @@
 package com.codehanzoom.greenwalk
 
+import com.codehanzoom.greenwalk.nav.BottomNavigation
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,30 +17,24 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.codehanzoom.greenwalk.nav.NavigationGraph
 import com.codehanzoom.greenwalk.publicCompose.LargeButton
-import com.codehanzoom.greenwalk.ui.theme.GreenMain
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
 @Composable
@@ -63,54 +58,6 @@ fun Main() {
         }
     }
 }
-
-@Composable
-fun BottomNavigation(navController: NavHostController) {
-    val items = listOf<BottomNavItem>(
-        BottomNavItem.Home,
-        BottomNavItem.Market,
-        BottomNavItem.Newsfeed,
-        BottomNavItem.Mypage
-    )
-
-    androidx.compose.material.BottomNavigation(
-        backgroundColor = Color.White,
-        contentColor = Color(0xFF3F414E)
-    ) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
-
-        items.forEach { item ->
-            BottomNavigationItem(
-                icon = {
-                    Icon(
-                        painter = painterResource(id = item.icon),
-                        contentDescription = stringResource(id = item.title),
-                        modifier = Modifier
-                            .width(26.dp)
-                            .height(26.dp)
-                    )
-                },
-//                label = { Text(stringResource(id = item.title), fontSize = 9.sp) },
-                selectedContentColor = GreenMain,
-                unselectedContentColor = Color.Gray,
-                selected = currentRoute == item.screenRoute,
-                alwaysShowLabel = false,
-                onClick = {
-                    navController.navigate(item.screenRoute) {
-                        navController.graph.startDestinationRoute?.let {
-                            popUpTo(it) { saveState = true }
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
-            )
-        }
-    }
-
-}
-
 
 @Composable
 fun HomeScreen() {
@@ -269,9 +216,12 @@ fun ploggingButton() {
         containerColor = Color(0xff8CB369),
         contentColor = Color.White
     ) {
-        Text(text = "플로깅 시작하기",
-            style = TextStyle(fontWeight = FontWeight.Bold,
-                fontSize = 20.sp)
+        Text(
+            text = "플로깅 시작하기",
+            style = TextStyle(
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp
+            )
         )
     }
 }
