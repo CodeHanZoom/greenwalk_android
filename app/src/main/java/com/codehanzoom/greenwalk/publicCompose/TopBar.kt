@@ -21,7 +21,7 @@ import com.codehanzoom.greenwalk.R
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
 @Composable
-fun TopBar(title: String) {
+fun TopBar(title: String, modifier: Modifier? = null) {
     Box(
 
         modifier = Modifier
