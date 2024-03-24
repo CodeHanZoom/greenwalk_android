@@ -1,6 +1,6 @@
 package com.codehanzoom.greenwalk
 
-import com.codehanzoom.greenwalk.nav.BottomNavigation
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import androidx.navigation.compose.rememberNavController
+import com.codehanzoom.greenwalk.nav.BottomNavigation
 import com.codehanzoom.greenwalk.nav.NavigationGraph
 import com.codehanzoom.greenwalk.publicCompose.LargeButton
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
@@ -207,11 +209,22 @@ fun areaListOfDonations() {
 
 @Composable
 fun ploggingButton() {
+    // 화면정보 불러오기
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp
+    val screenHeight = configuration.screenHeightDp.dp
+    // x, y 좌표 설정
+    // x: width 90%를 기준으로 좌,우 5% 가량 gap
+    // y: height 80% 기준으로 설정
+    val newX = (screenWidth.value * 0.1)/2
+    val newY = screenHeight.value * 0.8
+    Log.d("test", ""+screenWidth.value+" "+screenHeight.value )
+
     FloatingActionButton(
         modifier = Modifier
-            .width(400.dp)
+            .width((screenWidth.value * 0.9).toInt().dp)
             .height(40.dp)
-            .offset(10.dp, 660.dp),
+            .offset(newX.toInt().dp, newY.toInt().dp),
         onClick = { /* TODO */ },
         containerColor = Color(0xff8CB369),
         contentColor = Color.White
