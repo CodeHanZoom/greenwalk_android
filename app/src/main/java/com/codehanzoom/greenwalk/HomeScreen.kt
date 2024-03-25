@@ -36,7 +36,7 @@ import androidx.core.graphics.toColorInt
 import androidx.navigation.compose.rememberNavController
 import com.codehanzoom.greenwalk.nav.BottomNavigation
 import com.codehanzoom.greenwalk.nav.NavigationGraph
-import com.codehanzoom.greenwalk.publicCompose.LargeButton
+import com.codehanzoom.greenwalk.publicCompose.SmallButton
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
 @Composable
@@ -110,7 +110,8 @@ fun areaMyInfo(name: String, ploggingCount: Int, grade: String) {
             defaultElevation = 6.dp
         ), modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp)
+            .padding(10.dp),
+        colors = CardDefaults.cardColors(Color.White)
     ) {
         Column(
             modifier = Modifier
@@ -145,7 +146,8 @@ fun areaAttendance() {
             defaultElevation = 6.dp
         ), modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp)
+            .padding(10.dp),
+        colors = CardDefaults.cardColors(Color.White)
     ) {
         Column(
             modifier = Modifier
@@ -201,7 +203,7 @@ fun areaListOfDonations() {
                     Text("500P")
                 }
 
-                LargeButton("기부하기")
+                SmallButton("기부하기")
             }
         }
     }
