@@ -16,7 +16,7 @@ import com.codehanzoom.greenwalk.ui.theme.GW_Typography
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
 @Composable
-fun SmallButton(title: String) {
+fun SmallButton(title: String, modifier: Modifier? = null) {
     Button(
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(

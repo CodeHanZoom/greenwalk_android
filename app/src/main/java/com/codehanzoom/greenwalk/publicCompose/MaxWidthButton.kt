@@ -17,7 +17,7 @@ import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
 
 @Composable
-fun MaxWidthButton(title: String ) {
+fun MaxWidthButton(title: String, modifier: Modifier? = null) {
     Button(
         shape = RectangleShape,
         colors = ButtonDefaults.buttonColors(

@@ -20,7 +20,7 @@ import com.codehanzoom.greenwalk.ui.theme.GW_Typography
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
 @Composable
-fun TopBar(title: String) {
+fun TopBar(title: String, modifier: Modifier? = null) {
     Box(
 
         modifier = Modifier
