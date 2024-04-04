@@ -40,28 +40,6 @@ import com.codehanzoom.greenwalk.publicCompose.SmallButton
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
 @Composable
-fun Main() {
-    val navController = rememberNavController()
-    Scaffold(
-        topBar = {
-            areaHeader()
-        },
-        bottomBar = {
-            BottomNavigation(navController = navController)
-        }
-    ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxWidth()
-                .fillMaxHeight()
-        ) {
-            NavigationGraph(navController = navController)
-        }
-    }
-}
-
-@Composable
 fun HomeScreen() {
     Column(
         modifier = Modifier
