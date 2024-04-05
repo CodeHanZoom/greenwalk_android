@@ -16,7 +16,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.codehanzoom.greenwalk.HomeScreen
-import com.codehanzoom.greenwalk.ui.theme.GreenMain
+import com.codehanzoom.greenwalk.ui.theme.GW_Green200
 
 @Composable
 fun NavigationGraph(navController: NavHostController) {
@@ -63,7 +63,7 @@ fun BottomNavigation(navController: NavHostController) {
                             .height(26.dp)
                     )
                 },
-                selectedContentColor = GreenMain,
+                selectedContentColor = GW_Green200,
                 unselectedContentColor = Color.Gray,
                 selected = currentRoute == item.screenRoute,
                 alwaysShowLabel = false,
