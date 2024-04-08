@@ -1,4 +1,4 @@
-package com.codehanzoom.greenwalk.publicCompose
+package com.codehanzoom.greenwalk.compose
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -14,13 +14,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.codehanzoom.greenwalk.R
 import com.codehanzoom.greenwalk.ui.theme.GW_Black100
 import com.codehanzoom.greenwalk.ui.theme.GW_Typography
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
 @Composable
-fun TopBar(title: String, modifier: Modifier? = null) {
+fun TopBar(title: String, modifier: Modifier? = null, navController: NavHostController) {
     Box(
 
         modifier = Modifier
@@ -33,7 +35,9 @@ fun TopBar(title: String, modifier: Modifier? = null) {
             painter = painterResource(id = R.drawable.arrow_back),
             contentDescription = "Back",
             modifier = Modifier
-                .clickable { /* TODO */ } // 뒤로가기 이벤트
+                .clickable {
+                    navController.popBackStack()
+                }
         )
         Text(
             modifier = Modifier.fillMaxWidth(),
@@ -49,6 +53,7 @@ fun TopBar(title: String, modifier: Modifier? = null) {
 @Composable
 fun TopBarPreview() {
     GreenWalkTheme {
-        TopBar("회원가입")
+        val navController = rememberNavController()
+        TopBar("회원가입", navController = navController)
     }
 }

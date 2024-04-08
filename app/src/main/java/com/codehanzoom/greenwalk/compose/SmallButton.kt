@@ -1,4 +1,4 @@
-package com.codehanzoom.greenwalk.publicCompose
+package com.codehanzoom.greenwalk.compose
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
