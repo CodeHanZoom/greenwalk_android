@@ -1,6 +1,9 @@
-package com.codehanzoom.greenwalk
+package com.codehanzoom.greenwalk.view
 
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
@@ -30,27 +34,76 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.codehanzoom.greenwalk.publicCompose.MaxWidthButton
-import com.codehanzoom.greenwalk.publicCompose.TopBar
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.codehanzoom.greenwalk.compose.MaxWidthButton
+import com.codehanzoom.greenwalk.compose.TopBar
+import com.codehanzoom.greenwalk.model.LoginRequestBody
+import com.codehanzoom.greenwalk.model.SignUpRequestBody
+import com.codehanzoom.greenwalk.ui.theme.GW_Red100
+import com.codehanzoom.greenwalk.ui.theme.GW_Red200
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
+import com.codehanzoom.greenwalk.viewModel.LoginViewModel
+import com.codehanzoom.greenwalk.viewModel.SignupViewModel
 
 @Composable
-fun LoginActivity() {
+fun LoginScreen(navController: NavHostController) {
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var isEmpty by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        TopBar(title = "")
+        TopBar(title = "", navController = navController)
         Spacer(modifier = Modifier.height(60.dp))
         Logo()
         Spacer(modifier = Modifier.height(230.dp))
-        CumstomTextField("이메일")
+        LoginTextField(
+            title = "이메일",
+            value = email,
+            onValueChange = { email = it }
+        )
         Spacer(modifier = Modifier.height(40.dp))
-        CumstomTextField("비밀번호")
+        LoginTextField(
+            title = "비밀번호",
+            value = password,
+            onValueChange = { password = it }
+        )
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .height(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            if (isEmpty){
+                Text(
+                    text = errorMessage,
+                    color = GW_Red200,
+                )
+            }
+        }
         Spacer(modifier = Modifier.height(80.dp))
-        MaxWidthButton(title = "로그인")
+        MaxWidthButton(title = "로그인") {
+
+            if(email.isEmpty() || password.isEmpty()) {
+                isEmpty = true
+                errorMessage = "이메일 또는 비밀번호를 다시 확인해 주세요."
+            } else {
+                isEmpty = false
+                errorMessage = ""
+
+                val userData = LoginRequestBody(email, password)
+                LoginViewModel(userData).retrofitWork(
+                    navController=navController) { error ->
+                    isEmpty = error
+                }
+            }
+        }
         Spacer(modifier = Modifier.height(20.dp))
-        BottomContainer()
+        BottomContainer(navController = navController)
     }
 }
 
@@ -71,9 +124,7 @@ fun Logo() {
 }
 
 @Composable
-fun CumstomTextField(title: String) {
-    var value by remember { mutableStateOf("") }
-
+fun LoginTextField(title: String, value: String, onValueChange: (String) -> Unit) {
     Text(
         modifier = Modifier.padding(horizontal = 20.dp),
         text = title,
@@ -86,22 +137,21 @@ fun CumstomTextField(title: String) {
             .padding(horizontal = 20.dp)
             .fillMaxWidth(),
         value = value,
-        onValueChange = { value = it },
-        keyboardOptions = if (title == "이메일") {
-            KeyboardOptions(keyboardType = KeyboardType.Email)
-        } else {
-            KeyboardOptions(keyboardType = KeyboardType.Password)
-        },
-        visualTransformation = if (title == "이메일") {
-            VisualTransformation.None
-        } else {
-            PasswordVisualTransformation()
-        },
+        onValueChange = onValueChange,
+        keyboardOptions =
+            when(title) {
+                "이메일" -> KeyboardOptions(keyboardType = KeyboardType.Email)
+                else -> { KeyboardOptions(keyboardType = KeyboardType.Password) }
+            },
+        visualTransformation =
+            when(title) {
+                "이메일" -> VisualTransformation.None
+                else -> { PasswordVisualTransformation() }
+            },
         placeholder = {
-            if (title == "이메일") {
-                Text(text = "이메일을 입력해 주세요")
-            } else {
-                Text(text = "비밀번호를 입력해 주세요")
+            when(title) {
+                "이메일" -> Text(text = "이메일을 입력해 주세요")
+                else -> { Text(text = "비밀번호를 입력해 주세요") }
             }
         },
         singleLine = true,
@@ -117,7 +167,7 @@ fun CumstomTextField(title: String) {
 }
 
 @Composable
-fun BottomContainer() {
+fun BottomContainer(navController: NavHostController) {
     Row(
         horizontalArrangement = Arrangement.SpaceEvenly,
         modifier = Modifier
@@ -149,7 +199,10 @@ fun BottomContainer() {
         Text(
             text = "회원가입",
             fontWeight = FontWeight.W600,
-            fontSize = 16.sp
+            fontSize = 16.sp,
+            modifier = Modifier.clickable {
+                navController.navigate("SignUpScreen")
+            }
         )
     }
 }
@@ -158,6 +211,7 @@ fun BottomContainer() {
 @Composable
 fun LoginActivityPreview() {
     GreenWalkTheme {
-        LoginActivity()
+        val navController = rememberNavController()
+        LoginScreen(navController = navController)
     }
 }

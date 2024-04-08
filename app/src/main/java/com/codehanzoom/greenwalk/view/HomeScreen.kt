@@ -1,4 +1,4 @@
-package com.codehanzoom.greenwalk
+package com.codehanzoom.greenwalk.view
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -31,7 +31,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
-import com.codehanzoom.greenwalk.publicCompose.SmallButton
+import com.codehanzoom.greenwalk.Main
+import com.codehanzoom.greenwalk.R
+import com.codehanzoom.greenwalk.compose.SmallButton
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
 @Composable
