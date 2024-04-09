@@ -4,8 +4,10 @@ import com.codehanzoom.greenwalk.api.SharedPreferencesManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.navigation.compose.rememberNavController
 import com.codehanzoom.greenwalk.nav.NavigationGraph
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
+import com.codehanzoom.greenwalk.view.HomeScreen
 
 class MainActivity : ComponentActivity() {
     companion object {
@@ -18,8 +20,7 @@ class MainActivity : ComponentActivity() {
         prefs = SharedPreferencesManager(applicationContext)
         setContent {
             GreenWalkTheme {
-                NavigationGraph()
-            }
+                NavigationGraph()            }
         }
     }
 }

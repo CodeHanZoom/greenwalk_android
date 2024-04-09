@@ -10,6 +10,7 @@ import androidx.navigation.NavHostController
 import com.codehanzoom.greenwalk.MainActivity
 import com.codehanzoom.greenwalk.api.ApiClient
 import com.codehanzoom.greenwalk.model.LoginRequestBody
+import com.codehanzoom.greenwalk.nav.BottomNavItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,11 +19,8 @@ import kotlinx.coroutines.withContext
 
 class LoginViewModel(private val userInfo: LoginRequestBody) {
 
-    private var errorMessage by mutableStateOf("")
-
     fun retrofitWork(
         navController: NavHostController,
-        isLoginError: (Boolean) -> Unit
     ) {
 
         val api = ApiClient.retrofit()
@@ -47,11 +45,9 @@ class LoginViewModel(private val userInfo: LoginRequestBody) {
                                     Log.d(TAG, "로그인 / status : " + "${result.status}")
                                     Log.d(TAG, "로그인 / data : " + "${result.data}")
                                     Log.d(TAG, "로그인 / jwt : $accessToken")
-//                                    navController.navigate("HomeScreen")
+                                    navController.navigate("HomeScreen")
                                 }
-                                else -> {
-                                    isLoginError(true)
-                                }
+                                else -> {/* 로그인 실패 api 추가되면 구현 */}
                             }
                         } else {
                             Log.d("로그인 / 통신오류 : ", response.body().toString())

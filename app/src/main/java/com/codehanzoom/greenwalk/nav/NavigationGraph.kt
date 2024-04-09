@@ -15,30 +15,54 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.codehanzoom.greenwalk.HomeScreen
+import androidx.navigation.compose.rememberNavController
+import com.codehanzoom.greenwalk.view.HomeScreen
+import com.codehanzoom.greenwalk.view.LoginScreen
+import com.codehanzoom.greenwalk.view.PloggingScreen
+import com.codehanzoom.greenwalk.view.RecordScreen
+import com.codehanzoom.greenwalk.view.SignUpScreen
 import com.codehanzoom.greenwalk.ui.theme.GW_Green200
+import com.codehanzoom.greenwalk.view.MarketScreen
+import com.codehanzoom.greenwalk.view.MypageScreen
+import com.codehanzoom.greenwalk.view.NewsfeedScreen
 
 @Composable
-fun NavigationGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = BottomNavItem.Home.screenRoute) {
-        composable(BottomNavItem.Home.screenRoute) {
-            HomeScreen()
+fun NavigationGraph() {
+    val navController = rememberNavController()
+
+    NavHost(navController = navController, startDestination = "LoginScreen") {
+
+        composable("HomeScreen") {
+            HomeScreen(navController = navController)
         }
-        composable(BottomNavItem.Market.screenRoute) {
-            //MarketScreen()
+        composable("MarketScreen") {
+            MarketScreen(navController = navController)
         }
-        composable(BottomNavItem.Newsfeed.screenRoute) {
-            //NewsfeedScreen()
+        composable("NewsfeedScreen") {
+            NewsfeedScreen(navController = navController)
         }
-        composable(BottomNavItem.Mypage.screenRoute) {
-            //MypageScreen()
+        composable("MypageScreen") {
+            MypageScreen(navController = navController)
+        }
+        composable("LoginScreen") {
+            LoginScreen(navController = navController)
+        }
+        composable("SignUpScreen") {
+            SignUpScreen(navController = navController)
+        }
+        composable("RecordScreen") {
+            RecordScreen(navController = navController)
+        }
+        composable("PloggingScreen") {
+            PloggingScreen(navController = navController)
         }
     }
 }
 
 @Composable
-fun BottomNavigation(navController: NavHostController) {
-    val items = listOf<BottomNavItem>(
+fun BottomNavigation(navController:NavHostController) {
+
+    val items = listOf(
         BottomNavItem.Home,
         BottomNavItem.Market,
         BottomNavItem.Newsfeed,

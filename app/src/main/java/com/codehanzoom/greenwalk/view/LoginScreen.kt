@@ -96,10 +96,7 @@ fun LoginScreen(navController: NavHostController) {
                 errorMessage = ""
 
                 val userData = LoginRequestBody(email, password)
-                LoginViewModel(userData).retrofitWork(
-                    navController=navController) { error ->
-                    isEmpty = error
-                }
+                LoginViewModel(userData).retrofitWork(navController=navController)
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
