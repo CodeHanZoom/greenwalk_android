@@ -79,4 +79,22 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    // Gson 라이브러리 의존성 추가
+    // 구글에서 제공하는 Java 라이브러리로 Java to Json으로 변환 또는 Json to Java 객체로 변환에 사용.
+    implementation ("com.google.code.gson:gson:2.8.6")
+
+    // retrofit2
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.8.1")
+
+    // OkHttp
+    implementation ("com.squareup.okhttp3:okhttp:4.9.1")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.9.1")
+
+    // Coroutine
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
+
+
+
 }

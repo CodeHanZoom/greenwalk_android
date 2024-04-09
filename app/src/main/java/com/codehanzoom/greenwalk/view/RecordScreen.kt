@@ -1,4 +1,4 @@
-package com.codehanzoom.greenwalk
+package com.codehanzoom.greenwalk.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,18 +21,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.codehanzoom.greenwalk.publicCompose.LargeButton
-import com.codehanzoom.greenwalk.publicCompose.TopBar
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.codehanzoom.greenwalk.R
+import com.codehanzoom.greenwalk.compose.LargeButton
+import com.codehanzoom.greenwalk.compose.TopBar
 import com.codehanzoom.greenwalk.ui.theme.GW_Green100
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
 
 @Composable
-fun RecordScreen() {
+fun RecordScreen(navController: NavHostController) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TopBar(title = "기록")
+        TopBar(title = "기록", navController = navController)
         Spacer(modifier = Modifier
             .height(30.dp))
         CompleteSentence()
@@ -126,6 +129,7 @@ fun PloggingInfo() {
 )
 fun PreivewRecordScreen() {
     GreenWalkTheme {
-        RecordScreen()
+        val navController = rememberNavController()
+        RecordScreen(navController = navController)
     }
 }

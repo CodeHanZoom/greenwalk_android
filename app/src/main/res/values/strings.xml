@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">GreenWalk</string>
-    <string name="text_home">Home</string>
-    <string name="text_market">Market</string>
-    <string name="text_newsfeed">Newsfeed</string>
-    <string name="text_mypage">Mypage</string>
+    <string name="text_home">HomeScreen</string>
+    <string name="text_market">MarketScreen</string>
+    <string name="text_newsfeed">NewsfeedScreen</string>
+    <string name="text_mypage">MypageScreen</string>
 </resources>

@@ -1,5 +1,6 @@
-package com.codehanzoom.greenwalk.publicCompose
+package com.codehanzoom.greenwalk.compose
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -15,27 +16,29 @@ import com.codehanzoom.greenwalk.ui.theme.GW_Typography
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
 @Composable
-fun LargeButton(title: String, modifier: Modifier? = null) {
+fun SmallButton(title: String, modifier: Modifier? = null) {
     Button(
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color(0xff8CB369)
         ),
         modifier = Modifier
-            .size(320.dp, 50.dp),
+            .size(100.dp, 40.dp)
+            .padding(0.dp),
         onClick = { /*TODO*/ }) {
         Text(
             text = title,
-            style = GW_Typography.labelLarge,
+            style = GW_Typography.labelSmall,
             color = Color.White,
             textAlign = TextAlign.Center
         )
     }
 }
+
 @Preview(showBackground = true)
 @Composable
-fun LargeButtonPreview() {
+fun SmallButtonPreview() {
     GreenWalkTheme {
-        LargeButton("ABCabcㄱㄴㄷ012")
+        SmallButton("Aaㄱ1")
     }
 }
