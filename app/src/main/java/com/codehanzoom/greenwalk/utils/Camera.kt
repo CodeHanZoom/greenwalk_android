@@ -11,6 +11,9 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,21 +22,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import com.codehanzoom.greenwalk.R
 import com.codehanzoom.greenwalk.publicCompose.TopBar
+import com.codehanzoom.greenwalk.ui.theme.GW_Black100
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+import androidx.compose.ui.tooling.preview.Preview as PreviewCompose
 
 @Composable
 fun CameraPreviewScreen() {
@@ -44,7 +50,9 @@ fun CameraPreviewScreen() {
     val previewView = remember {
         PreviewView(context)
     }
-    val cameraxSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
+    val cameraxSelector = CameraSelector.Builder()
+        .requireLensFacing(lensFacing)
+        .build()
     val imageCapture = remember {
         ImageCapture.Builder().build()
     }
@@ -54,16 +62,27 @@ fun CameraPreviewScreen() {
         cameraProvider.bindToLifecycle(lifecycleOwner, cameraxSelector, preview)
         preview.setSurfaceProvider(previewView.surfaceProvider)
     }
-    TopBar(title = "TEST")
+    CameraUI(previewView)
+}
+
+@Composable
+fun CameraUI(previewView: PreviewView) {
+    // 화면정보 불러오기
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp
+
+    TopBar(title = "사진촬영")
     Column (horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxSize()
+            .background(GW_Black100)
 
     ) {
-
+        Spacer(modifier = Modifier.height(100.dp))
         Box (
-            modifier = Modifier.width(200.dp)
+            modifier = Modifier.width(screenWidth)
+
         ){
             AndroidView({ previewView },
                 modifier = Modifier
@@ -72,13 +91,14 @@ fun CameraPreviewScreen() {
             )
         }
 
-        Spacer(modifier = Modifier.height(100.dp))
-        Button(onClick = { captureImage(imageCapture, context) }) {
-            Text(text = "Capture Image1")
-        }
+        Spacer(modifier = Modifier.height(150.dp))
+        Image(
+            painter = painterResource(id = R.drawable.ic_camera),
+            contentDescription = null,
+            Modifier.clickable { /* TODO */ }
+        )
     }
 }
-
 private fun captureImage(imageCapture: ImageCapture, context: Context) {
     val name = "CameraxImage.jpeg"
     val contentValues = ContentValues().apply {
@@ -118,3 +138,9 @@ private suspend fun Context.getCameraProvider(): ProcessCameraProvider =
             }, ContextCompat.getMainExecutor(this))
         }
     }
+
+@PreviewCompose
+@Composable
+fun CameraPreview() {
+    CameraPreviewScreen()
+}
