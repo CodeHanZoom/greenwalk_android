@@ -1,4 +1,4 @@
-package com.codehanzoom.greenwalk.publicCompose
+package com.codehanzoom.greenwalk.compose
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,7 +17,7 @@ import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
 
 @Composable
-fun MaxWidthButton(title: String, modifier: Modifier? = null) {
+fun MaxWidthButton(title: String, onClick: () -> Unit) {
     Button(
         shape = RectangleShape,
         colors = ButtonDefaults.buttonColors(
@@ -26,7 +26,7 @@ fun MaxWidthButton(title: String, modifier: Modifier? = null) {
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp),
-        onClick = { /*TODO*/ }) {
+        onClick = onClick) {
         Text(
             text = title,
             style = GW_Typography.labelLarge,
@@ -39,6 +39,5 @@ fun MaxWidthButton(title: String, modifier: Modifier? = null) {
 @Composable
 fun MaxWidthButtonPreview() {
     GreenWalkTheme {
-        MaxWidthButton("ABCabcㄱㄴㄷ012")
     }
 }

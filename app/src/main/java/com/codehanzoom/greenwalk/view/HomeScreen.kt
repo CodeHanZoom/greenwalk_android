@@ -1,4 +1,4 @@
-package com.codehanzoom.greenwalk
+package com.codehanzoom.greenwalk.view
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Scaffold
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
@@ -31,28 +33,48 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
-import com.codehanzoom.greenwalk.publicCompose.SmallButton
+import androidx.navigation.NavHostController
+import com.codehanzoom.greenwalk.R
+import com.codehanzoom.greenwalk.compose.SmallButton
+import com.codehanzoom.greenwalk.nav.BottomNavigation
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
 @Composable
-fun HomeScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(10.dp)
-            .verticalScroll(rememberScrollState())
-    ) {
-        areaMyInfo(name = "나희수", ploggingCount = 328, grade = "GOLD")
+fun  HomeScreen(navController: NavHostController) {
 
-        areaAttendance()
+    Scaffold(
+        topBar = {
+            areaHeader()
+        },
+        bottomBar = {
+            BottomNavigation(navController)
+        }
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxWidth()
+                .fillMaxHeight()
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(10.dp)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                areaMyInfo(name = "나희수", ploggingCount = 328, grade = "GOLD")
 
-        areaCheer(name = "나희수")
+                areaAttendance()
 
-        areaListOfDonations()
+                areaCheer(name = "나희수")
+
+                areaListOfDonations()
+            }
+
+        }
     }
-
-    ploggingButton()
-}
+           ploggingButton()
+    }
 
 @Composable
 fun areaHeader() {
@@ -218,6 +240,6 @@ fun ploggingButton() {
 @Preview
 fun PreviewHome() {
     GreenWalkTheme {
-        Main()
+//        Main()
     }
 }
