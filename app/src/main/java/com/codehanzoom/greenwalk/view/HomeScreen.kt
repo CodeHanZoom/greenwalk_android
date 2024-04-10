@@ -75,7 +75,7 @@ fun  HomeScreen(navController: NavHostController) {
 
         }
     }
-           ploggingButton()
+           ploggingButton(navController)
     }
 
 @Composable
@@ -207,7 +207,7 @@ fun areaListOfDonations() {
 }
 
 @Composable
-fun ploggingButton() {
+fun ploggingButton(navController: NavHostController) {
     // 화면정보 불러오기
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
@@ -230,7 +230,7 @@ fun ploggingButton() {
     FloatingActionButton(
         onClick = {
 //            // 카메라 인텐트 시작
-//            takePictureLauncher.launch()
+            navController.navigate("PloggingScreen")
         },
         modifier = Modifier
             .width((screenWidth.value * 0.9).toInt().dp)

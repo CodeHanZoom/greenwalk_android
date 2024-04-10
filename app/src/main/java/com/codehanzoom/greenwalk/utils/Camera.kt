@@ -34,15 +34,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.codehanzoom.greenwalk.R
-import com.codehanzoom.greenwalk.publicCompose.TopBar
+import com.codehanzoom.greenwalk.compose.TopBar
 import com.codehanzoom.greenwalk.ui.theme.GW_Black100
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import androidx.compose.ui.tooling.preview.Preview as PreviewCompose
 
 @Composable
-fun CameraPreviewScreen() {
+fun CameraPreviewScreen(navController: NavHostController) {
     val lensFacing = CameraSelector.LENS_FACING_BACK
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
@@ -62,16 +64,16 @@ fun CameraPreviewScreen() {
         cameraProvider.bindToLifecycle(lifecycleOwner, cameraxSelector, preview)
         preview.setSurfaceProvider(previewView.surfaceProvider)
     }
-    CameraUI(previewView)
+    CameraUI(previewView, navController)
 }
 
 @Composable
-fun CameraUI(previewView: PreviewView) {
+fun CameraUI(previewView: PreviewView, navController: NavHostController) {
     // 화면정보 불러오기
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
 
-    TopBar(title = "사진촬영")
+    TopBar(title = "사진촬영", navController = navController)
     Column (horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
@@ -95,7 +97,9 @@ fun CameraUI(previewView: PreviewView) {
         Image(
             painter = painterResource(id = R.drawable.ic_camera),
             contentDescription = null,
-            Modifier.clickable { /* TODO */ }
+            Modifier.clickable {
+                navController.navigate("HomeScreen")
+            }
         )
     }
 }
@@ -142,5 +146,6 @@ private suspend fun Context.getCameraProvider(): ProcessCameraProvider =
 @PreviewCompose
 @Composable
 fun CameraPreview() {
-    CameraPreviewScreen()
+    val navController = rememberNavController()
+    CameraPreviewScreen(navController)
 }

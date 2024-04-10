@@ -44,7 +44,9 @@ fun RecordScreen(navController: NavHostController) {
         PloggingInfo()
         Spacer(modifier = Modifier
             .height(30.dp))
-        LargeButton(title = "사진촬영하기")
+        LargeButton(title = "사진촬영하기") {
+            navController.navigate("CameraScreen")
+        }
     }
 
 }

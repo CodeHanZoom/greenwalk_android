@@ -13,22 +13,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
-import com.codehanzoom.greenwalk.publicCompose.SmallButton
-import com.codehanzoom.greenwalk.publicCompose.TopBar
-import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
+import androidx.navigation.NavHostController
+import com.codehanzoom.greenwalk.compose.SmallButton
+import com.codehanzoom.greenwalk.compose.TopBar
 
 @Composable
-fun CameraActivity() {
+fun CameraActivity(navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White),
     ) {
-        TopBar(title = "사진촬영")
+        TopBar(title = "사진촬영", navController = navController)
         Spacer(modifier = Modifier.height(40.dp))
         cameraScreen()
         SmallButton(title = "촬영하기")
@@ -64,10 +63,10 @@ fun cameraScreen() {
     )
 }
 
-@Preview(showBackground = true)
-@Composable
-fun CameraActivityPreview() {
-    GreenWalkTheme {
-        CameraActivity()
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun CameraActivityPreview() {
+//    GreenWalkTheme {
+//        CameraActivity()
+//    }
+//}

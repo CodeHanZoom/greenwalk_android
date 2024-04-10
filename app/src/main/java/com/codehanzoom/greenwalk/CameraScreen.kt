@@ -6,12 +6,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 import com.codehanzoom.greenwalk.utils.CameraPreviewScreen
 
 
 @Composable
-fun CameraScreen() {
+fun CameraScreen(navController: NavHostController) {
     GreenWalkTheme {
         Column (
             modifier = Modifier
@@ -19,7 +21,7 @@ fun CameraScreen() {
             verticalArrangement = Arrangement.Center
         ){
             // A surface container using the 'background' color from the theme
-            CameraPreviewScreen()
+            CameraPreviewScreen(navController = navController)
         }
     }
 }
@@ -30,5 +32,6 @@ fun CameraScreen() {
 )
 @Composable
 fun CameraScreenPreview() {
-    CameraScreen()
+    val navController = rememberNavController()
+    CameraScreen(navController)
 }
