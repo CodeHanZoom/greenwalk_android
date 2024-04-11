@@ -38,6 +38,7 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -51,6 +52,14 @@ android {
 
 dependencies {
     val nav_version = "2.7.7"
+    // camerax
+    // Camerax implementation
+    val cameraxVersion = "1.3.1"
+    implementation ("androidx.camera:camera-core:${cameraxVersion}")
+    implementation ("androidx.camera:camera-camera2:${cameraxVersion}")
+    implementation ("androidx.camera:camera-view:${cameraxVersion}")
+    implementation ("androidx.camera:camera-lifecycle:$cameraxVersion")
+
     implementation("androidx.window:window:1.2.0")
     implementation("androidx.navigation:navigation-common:$nav_version")
     implementation("androidx.compose.material:material:1.6.3")

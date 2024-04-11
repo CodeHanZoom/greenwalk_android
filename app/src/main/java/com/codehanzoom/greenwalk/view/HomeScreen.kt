@@ -1,6 +1,8 @@
 package com.codehanzoom.greenwalk.view
 
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -73,7 +75,7 @@ fun  HomeScreen(navController: NavHostController) {
 
         }
     }
-           ploggingButton()
+           ploggingButton(navController)
     }
 
 @Composable
@@ -205,7 +207,7 @@ fun areaListOfDonations() {
 }
 
 @Composable
-fun ploggingButton() {
+fun ploggingButton(navController: NavHostController) {
     // 화면정보 불러오기
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
@@ -217,12 +219,23 @@ fun ploggingButton() {
     val newY = screenHeight.value * 0.8
     Log.d("test", ""+screenWidth.value+" "+screenHeight.value )
 
+    // 카메라 인텐트를 실행하기 위한 launcher
+    val takePictureLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { isTaken ->
+//        if (isTaken) {
+//            // 이미지가 성공적으로 촬영되었을 때 동작할 내용을 작성합니다.
+//            // 여기에서는 필요한 작업을 추가하시면 됩니다.
+//        }
+    }
+
     FloatingActionButton(
+        onClick = {
+//            // 카메라 인텐트 시작
+            navController.navigate("PloggingScreen")
+        },
         modifier = Modifier
             .width((screenWidth.value * 0.9).toInt().dp)
             .height(40.dp)
             .offset(newX.toInt().dp, newY.toInt().dp),
-        onClick = { /* TODO */ },
         containerColor = Color(0xff8CB369),
         contentColor = Color.White
     ) {
@@ -234,6 +247,7 @@ fun ploggingButton() {
             )
         )
     }
+
 }
 
 @Composable

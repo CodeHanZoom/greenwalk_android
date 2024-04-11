@@ -26,16 +26,18 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.codehanzoom.greenwalk.publicCompose.MaxWidthButton
-import com.codehanzoom.greenwalk.publicCompose.TopBar
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.codehanzoom.greenwalk.compose.MaxWidthButton
+import com.codehanzoom.greenwalk.compose.TopBar
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
 @Composable
-fun RegisterActivity() {
+fun RegisterActivity(navController: NavHostController) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        TopBar(title = "회원가입")
+        TopBar(title = "회원가입", navController = navController)
         Divider()
         Spacer(modifier = Modifier.height(30.dp))
         CustomTextField("이메일")
@@ -51,7 +53,9 @@ fun RegisterActivity() {
             .fillMaxSize()
             .padding(top = 700.dp)
     ) {
-        MaxWidthButton(title = "가입하기")
+        MaxWidthButton(title = "가입하기") {
+
+        }
     }
 }
 
@@ -110,6 +114,7 @@ fun CustomTextField(title: String) {
 @Composable
 fun RegisterActivityPreview() {
     GreenWalkTheme {
-        RegisterActivity()
+        val navController = rememberNavController()
+        RegisterActivity(navController)
     }
 }

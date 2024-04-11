@@ -15,7 +15,7 @@ import com.codehanzoom.greenwalk.ui.theme.GW_Typography
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
 @Composable
-fun LargeButton(title: String, modifier: Modifier? = null) {
+fun LargeButton(title: String, modifier: Modifier? = null, onClick: () -> Unit = { }) {
     Button(
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(
@@ -23,7 +23,7 @@ fun LargeButton(title: String, modifier: Modifier? = null) {
         ),
         modifier = Modifier
             .size(320.dp, 50.dp),
-        onClick = { /*TODO*/ }) {
+        onClick = onClick) {
         Text(
             text = title,
             style = GW_Typography.labelLarge,

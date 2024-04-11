@@ -76,11 +76,11 @@ fun PloggingScreen(navController: NavHostController) {
             )
         }
     }
-    StopButton()
+    StopButton(navController)
 }
 
 @Composable
-fun StopButton() {
+fun StopButton(navController: NavHostController) {
     // 화면정보 불러오기
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
@@ -96,7 +96,9 @@ fun StopButton() {
             .width(70.dp)
             .height(70.dp)
             .offset(newX.toInt().dp, newY.toInt().dp),
-        onClick = {},
+        onClick = {
+                  navController.navigate("RecordScreen")
+        },
         containerColor = GW_Red100
     ) {
         Image(

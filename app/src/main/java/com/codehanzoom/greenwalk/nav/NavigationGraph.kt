@@ -16,15 +16,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.codehanzoom.greenwalk.CameraScreen
+import com.codehanzoom.greenwalk.ui.theme.GW_Green200
 import com.codehanzoom.greenwalk.view.HomeScreen
 import com.codehanzoom.greenwalk.view.LoginScreen
-import com.codehanzoom.greenwalk.view.PloggingScreen
-import com.codehanzoom.greenwalk.view.RecordScreen
-import com.codehanzoom.greenwalk.view.SignUpScreen
-import com.codehanzoom.greenwalk.ui.theme.GW_Green200
 import com.codehanzoom.greenwalk.view.MarketScreen
 import com.codehanzoom.greenwalk.view.MypageScreen
 import com.codehanzoom.greenwalk.view.NewsfeedScreen
+import com.codehanzoom.greenwalk.view.PloggingScreen
+import com.codehanzoom.greenwalk.view.RecordScreen
+import com.codehanzoom.greenwalk.view.SignUpScreen
 
 @Composable
 fun NavigationGraph() {
@@ -55,6 +56,9 @@ fun NavigationGraph() {
         }
         composable("PloggingScreen") {
             PloggingScreen(navController = navController)
+        }
+        composable("CameraScreen") {
+            CameraScreen(navController = navController)
         }
     }
 }
