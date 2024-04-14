@@ -51,6 +51,10 @@ android {
 }
 
 dependencies {
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.10.0")
+    implementation("androidx.activity:activity:1.8.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     val nav_version = "2.7.7"
     // camerax
     // Camerax implementation
@@ -95,6 +99,7 @@ dependencies {
     // Coroutine
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
 
-
+    // Splash
+    implementation ("androidx.core:core-splashscreen:1.0.1")
 
 }
