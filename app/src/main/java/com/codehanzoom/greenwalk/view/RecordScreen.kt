@@ -60,7 +60,7 @@ fun CompleteSentence() {
             .height(222.dp)
     ) {
         Image(
-            painterResource(id = R.drawable.ic_plogging_complete),
+            painterResource(id = R.drawable.ic_plogging_clear),
             contentDescription = "plogging_complete",
             modifier = Modifier
                 .width(60.dp)

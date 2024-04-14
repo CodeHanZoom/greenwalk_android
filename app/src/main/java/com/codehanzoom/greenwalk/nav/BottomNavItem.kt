@@ -16,5 +16,5 @@ sealed class BottomNavItem(
     )
 
     object Mypage : BottomNavItem
-        (R.string.text_mypage, R.drawable.ic_mypage, "MypageScreen")
+        (R.string.text_mypage, R.drawable.ic_profile, "MypageScreen")
 }
