@@ -93,7 +93,7 @@ fun areaHeader() {
             fontWeight = FontWeight.Bold
         )
         Image(
-            painter = painterResource(R.drawable.notification_picture),
+            painter = painterResource(R.drawable.ic_notifications),
             contentDescription = "image for notification",
             modifier = Modifier.size(32.dp)
         )

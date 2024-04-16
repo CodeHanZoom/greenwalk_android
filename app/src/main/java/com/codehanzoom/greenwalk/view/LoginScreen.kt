@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.codehanzoom.greenwalk.compose.Logo
 import com.codehanzoom.greenwalk.compose.MaxWidthButton
 import com.codehanzoom.greenwalk.compose.TopBar
 import com.codehanzoom.greenwalk.ui.theme.GW_Red200
@@ -95,22 +96,6 @@ fun LoginScreen(navController: NavHostController) {
         }
         Spacer(modifier = Modifier.height(20.dp))
         BottomContainer(navController = navController)
-    }
-}
-
-@Composable
-fun Logo() {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = "GreenWalk",
-            fontFamily = FontFamily.SansSerif,
-            fontWeight = FontWeight.Bold,
-            fontSize = 40.sp,
-            color = Color(0xFF8CB369),
-        )
     }
 }
 
