@@ -10,8 +10,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 
 object ApiClient {
-//    private const val BASE_URL = "http://aws-v5-beanstalk-env.eba-znduyhtv.ap-northeast-2.elasticbeanstalk.com/"
-    private const val BASE_URL = "http://10.0.2.2:8080"
+    private const val BASE_URL = "http://aws-v5-beanstalk-env.eba-znduyhtv.ap-northeast-2.elasticbeanstalk.com/"
+//    private const val BASE_URL = "http://10.0.2.2:8080"
     class AppInterceptor : Interceptor {
         @Throws(IOException::class)
         override fun intercept(chain: Interceptor.Chain) : Response = with(chain) {

@@ -1,7 +1,9 @@
 package com.codehanzoom.greenwalk.view
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,7 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -34,11 +36,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.codehanzoom.greenwalk.compose.Logo
+import com.codehanzoom.greenwalk.R
 import com.codehanzoom.greenwalk.compose.MaxWidthButton
 import com.codehanzoom.greenwalk.compose.TopBar
+import com.codehanzoom.greenwalk.model.LoginRequestBody
 import com.codehanzoom.greenwalk.ui.theme.GW_Red200
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
+import com.codehanzoom.greenwalk.viewModel.LoginViewModel
 
 @Composable
 fun LoginScreen(navController: NavHostController) {
@@ -53,7 +57,16 @@ fun LoginScreen(navController: NavHostController) {
     ) {
         TopBar(title = "", navController = navController)
         Spacer(modifier = Modifier.height(60.dp))
-        Logo()
+        Box (
+            modifier = Modifier
+                .fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ){
+            Image(
+                painter = painterResource(id = R.drawable.ic_logo),
+                contentDescription = null
+            )
+        }
         Spacer(modifier = Modifier.height(230.dp))
         LoginTextField(
             title = "이메일",
@@ -82,16 +95,16 @@ fun LoginScreen(navController: NavHostController) {
         Spacer(modifier = Modifier.height(80.dp))
         MaxWidthButton(title = "로그인") {
 
-//            if(email.isEmpty() || password.isEmpty()) {
-//                isEmpty = true
-//                errorMessage = "이메일 또는 비밀번호를 다시 확인해 주세요."
-//            } else {
-//                isEmpty = false
-//                errorMessage = ""
-//
-//                val userData = LoginRequestBody(email, password)
-//                LoginViewModel(userData).retrofitWork(navController=navController)
-//            }
+            if(email.isEmpty() || password.isEmpty()) {
+                isEmpty = true
+                errorMessage = "이메일 또는 비밀번호를 다시 확인해 주세요."
+            } else {
+                isEmpty = false
+                errorMessage = ""
+
+                val userData = LoginRequestBody(email, password)
+                LoginViewModel(userData).retrofitWork(navController=navController)
+            }
             navController.navigate("HomeScreen")
         }
         Spacer(modifier = Modifier.height(20.dp))
