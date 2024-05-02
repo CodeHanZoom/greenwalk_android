@@ -128,6 +128,7 @@ fun CameraUI(previewView: PreviewView, navController: NavHostController,
 //                captureImage(imageCapture, context)
 
                 captureImageAndSendToServer(imageCapture, context, serverUrl = "http://aws-v5-beanstalk-env.eba-znduyhtv.ap-northeast-2.elasticbeanstalk.com/", 0, 0.0f)
+//                navController.navigate("HomeScreen")
 
 //                LaunchedEffect(key1 = Unit) {
 //                    delay(30000)  // 30초 딜레이
