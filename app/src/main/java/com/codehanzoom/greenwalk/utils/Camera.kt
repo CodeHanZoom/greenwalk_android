@@ -59,12 +59,14 @@ import androidx.compose.ui.tooling.preview.Preview as PreviewCompose
 import android.net.Uri
 import com.codehanzoom.greenwalk.MainActivity
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.InputStream
+import java.util.concurrent.TimeUnit
 
 @Composable
 fun CameraPreviewScreen(navController: NavHostController) {
@@ -124,8 +126,13 @@ fun CameraUI(previewView: PreviewView, navController: NavHostController,
             Modifier.clickable {
 //                captureAndProcessImage(imageCapture, context)
 //                captureImage(imageCapture, context)
-//                navController.navigate("HomeScreen")
+
                 captureImageAndSendToServer(imageCapture, context, serverUrl = "http://aws-v5-beanstalk-env.eba-znduyhtv.ap-northeast-2.elasticbeanstalk.com/", 0, 0.0f)
+
+//                LaunchedEffect(key1 = Unit) {
+//                    delay(30000)  // 30초 딜레이
+//                    navController.navigate("HomeScreen")
+//                }
             }
         )
     }
@@ -168,6 +175,53 @@ private fun captureImageAndSendToServer(imageCapture: ImageCapture, context: Con
         }
     )
 }
+// timeout 미적용
+//private fun sendImageToServer(context: Context, imageUri: Uri, serverUrl: String, step: Int, walking: Float, accessToken: String) {
+//    val mediaTypeTextPlain = "text/plain".toMediaTypeOrNull()
+//
+//    try {
+//        context.contentResolver.openInputStream(imageUri).use { inputStream ->
+//            val bitmap = BitmapFactory.decodeStream(inputStream)
+//            val resizedBitmap = resizeBitmap(bitmap, 640, 640)
+//            val outputStream = ByteArrayOutputStream()
+//            resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+//            val imageBytes = outputStream.toByteArray()
+//
+//            val retrofit = Retrofit.Builder()
+//                .baseUrl(serverUrl)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build()
+//
+//            val service = retrofit.create(UploadService::class.java)
+//            val mediaTypePng = "image/png".toMediaTypeOrNull()
+//            val requestFile = RequestBody.create(mediaTypePng, imageBytes)
+//            val imagePart = MultipartBody.Part.createFormData("image", "image.png", requestFile)
+//            val stepBody = RequestBody.create(mediaTypeTextPlain, step.toString())
+//            val walkingBody = RequestBody.create(mediaTypeTextPlain, walking.toString())
+//
+//            val call = service.uploadImage(imagePart, stepBody, walkingBody, "Bearer $accessToken")
+//            call.enqueue(object : Callback<ResponseBody> {
+//                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+//                    if (response.isSuccessful) {
+//                        println("response "+response.message().toString()+" "+response.body()?.string())
+//                        println("Image uploaded successfully!")
+//                    } else {
+//                        println("Failed to upload image: ${response.code()}")
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+//                    println("Network error: ${t.message}")
+//                }
+//            })
+//        }
+//    } catch (e: FileNotFoundException) {
+//        Log.e("CameraXApp", "File not found: $e")
+//    } catch (e: IOException) {
+//        Log.e("CameraXApp", "Error accessing file: $e")
+//    }
+//}
+// timeout 적용
 private fun sendImageToServer(context: Context, imageUri: Uri, serverUrl: String, step: Int, walking: Float, accessToken: String) {
     val mediaTypeTextPlain = "text/plain".toMediaTypeOrNull()
 
@@ -179,8 +233,14 @@ private fun sendImageToServer(context: Context, imageUri: Uri, serverUrl: String
             resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
             val imageBytes = outputStream.toByteArray()
 
+            val okHttpClient = OkHttpClient.Builder()
+                .readTimeout(30, TimeUnit.SECONDS)  // 읽기 타임아웃을 30초로 설정
+                .connectTimeout(30, TimeUnit.SECONDS)  // 연결 타임아웃을 30초로 설정
+                .build()
+
             val retrofit = Retrofit.Builder()
                 .baseUrl(serverUrl)
+                .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
@@ -195,10 +255,10 @@ private fun sendImageToServer(context: Context, imageUri: Uri, serverUrl: String
             call.enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     if (response.isSuccessful) {
-                        println("response "+response.message().toString()+" "+response.body()?.string())
+                        println("response: ${response.message()}, body: ${response.body()?.string()}")
                         println("Image uploaded successfully!")
                     } else {
-                        println("Failed to upload image: ${response.code()}")
+                        println("Failed to upload image: ${response.code()}, error: ${response.errorBody()?.string()}")
                     }
                 }
 
