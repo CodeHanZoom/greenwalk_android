@@ -58,6 +58,7 @@ import kotlin.coroutines.suspendCoroutine
 import androidx.compose.ui.tooling.preview.Preview as PreviewCompose
 import android.net.Uri
 import com.codehanzoom.greenwalk.MainActivity
+import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import retrofit2.Call
@@ -127,13 +128,14 @@ fun CameraUI(previewView: PreviewView, navController: NavHostController,
 //                captureAndProcessImage(imageCapture, context)
 //                captureImage(imageCapture, context)
 
-                captureImageAndSendToServer(imageCapture, context, serverUrl = "http://aws-v5-beanstalk-env.eba-znduyhtv.ap-northeast-2.elasticbeanstalk.com/", 0, 0.0f)
 //                navController.navigate("HomeScreen")
 
-//                LaunchedEffect(key1 = Unit) {
-//                    delay(30000)  // 30초 딜레이
-//                    navController.navigate("HomeScreen")
-//                }
+                runBlocking {
+                    captureImageAndSendToServer(imageCapture, context, serverUrl = "http://aws-v5-beanstalk-env.eba-znduyhtv.ap-northeast-2.elasticbeanstalk.com/", 0, 0.0f)
+                    navController.navigate("HomeScreen")
+                }
+
+
             }
         )
     }
