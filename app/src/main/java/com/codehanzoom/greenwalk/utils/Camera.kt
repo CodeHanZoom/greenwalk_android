@@ -57,6 +57,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import androidx.compose.ui.tooling.preview.Preview as PreviewCompose
 import android.net.Uri
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.codehanzoom.greenwalk.MainActivity
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -93,15 +94,75 @@ fun CameraPreviewScreen(navController: NavHostController) {
     CameraUI(previewView, navController, imageCapture, context)
 }
 
+//@Composable
+//fun CameraUI(previewView: PreviewView, navController: NavHostController,
+//             imageCapture: ImageCapture, context: Context) {
+//    // 화면정보 불러오기
+//    val configuration = LocalConfiguration.current
+//    val screenWidth = configuration.screenWidthDp.dp
+//
+//    TopBar(title = "사진촬영", navController = navController)
+//    Column (horizontalAlignment = Alignment.CenterHorizontally,
+//        verticalArrangement = Arrangement.Center,
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .background(GW_Black100)
+//
+//    ) {
+//        Spacer(modifier = Modifier.height(100.dp))
+//        Box (
+//            modifier = Modifier.width(screenWidth)
+//
+//        ){
+//            AndroidView({ previewView },
+//                modifier = Modifier
+//                    .height(300.dp)
+//                    .fillMaxWidth()
+//            )
+//        }
+//
+//        Spacer(modifier = Modifier.height(150.dp))
+//        Image(
+//            painter = painterResource(id = R.drawable.ic_camera),
+//            contentDescription = null,
+//            Modifier.clickable {
+////                captureAndProcessImage(imageCapture, context)
+////                captureImage(imageCapture, context)
+//
+////                navController.navigate("HomeScreen")
+//
+//                // 클릭 이벤트 핸들러
+//                LaunchedEffect(Unit) {
+//                    captureImageAndSendToServer(imageCapture, context, "http://aws-v5-beanstalk-env.eba-znduyhtv.ap-northeast-2.elasticbeanstalk.com/", 0, 0.0f)
+//                    navController.navigate("HomeScreen")
+//                }
+//
+//
+//            }
+//        )
+//    }
+//}
+
 @Composable
-fun CameraUI(previewView: PreviewView, navController: NavHostController,
-             imageCapture: ImageCapture, context: Context) {
+fun CameraUI(
+    previewView: PreviewView,
+    navController: NavHostController,
+    imageCapture: ImageCapture,
+    context: Context
+) {
+    // 클릭 이벤트 핸들러
+    val handleClick: () -> Unit = {
+        // Navigation 처리
+        navController.navigate("HomeScreen")
+    }
+
     // 화면정보 불러오기
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
 
     TopBar(title = "사진촬영", navController = navController)
-    Column (horizontalAlignment = Alignment.CenterHorizontally,
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxSize()
@@ -109,11 +170,12 @@ fun CameraUI(previewView: PreviewView, navController: NavHostController,
 
     ) {
         Spacer(modifier = Modifier.height(100.dp))
-        Box (
+        Box(
             modifier = Modifier.width(screenWidth)
 
-        ){
-            AndroidView({ previewView },
+        ) {
+            AndroidView(
+                { previewView },
                 modifier = Modifier
                     .height(300.dp)
                     .fillMaxWidth()
@@ -124,22 +186,23 @@ fun CameraUI(previewView: PreviewView, navController: NavHostController,
         Image(
             painter = painterResource(id = R.drawable.ic_camera),
             contentDescription = null,
-            Modifier.clickable {
-//                captureAndProcessImage(imageCapture, context)
-//                captureImage(imageCapture, context)
+            Modifier.clickable(onClick = handleClick)
+        )
+    }
 
-//                navController.navigate("HomeScreen")
-
-                runBlocking {
-                    captureImageAndSendToServer(imageCapture, context, serverUrl = "http://aws-v5-beanstalk-env.eba-znduyhtv.ap-northeast-2.elasticbeanstalk.com/", 0, 0.0f)
-                    navController.navigate("HomeScreen")
-                }
-
-
-            }
+    // 클릭 핸들러 내에서 비동기 작업 수행 (Navigation 이후에 실행되도록)
+    LaunchedEffect(navController.currentBackStackEntryAsState().value) {
+        captureImageAndSendToServer(
+            imageCapture,
+            context,
+            "http://aws-v5-beanstalk-env.eba-znduyhtv.ap-northeast-2.elasticbeanstalk.com/",
+            0,
+            0.0f
         )
     }
 }
+
+
 
 private fun resizeBitmap(bitmap: Bitmap, targetWidth: Int, targetHeight: Int): Bitmap {
     return Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, false)
