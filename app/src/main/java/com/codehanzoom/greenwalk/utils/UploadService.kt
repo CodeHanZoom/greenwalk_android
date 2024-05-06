@@ -10,8 +10,10 @@ import retrofit2.http.POST
 import retrofit2.http.Part
 
 interface UploadService {
+    // Req Type: GET
+    // Endpoint: photos
     @Multipart
-    @POST("photos") // 서버 엔드포인트
+    @POST("photos")
     fun uploadImage(
         @Part image: MultipartBody.Part,
         @Part("step") step: RequestBody,
@@ -19,12 +21,3 @@ interface UploadService {
         @Header("Authorization") accessToken: String
     ): Call<ResponseBody>
 }
-//interface UploadService {
-//    @POST("photos")
-//    fun uploadImage(
-//        @Body image: RequestBody, // 이미지 데이터는 Base64 인코딩된 문자열로 보낸다
-//        @Query("step") step: Int,
-//        @Query("walkingDistance") walking: Float,
-//        @Header("accessToken") accessToken: String
-//    ): Call<ResponseBody>
-//}
