@@ -231,8 +231,8 @@ fun CameraUI(
                 }
                 coroutineScope.launch {
                     var remainTime = 30
-                    for (i in 1..4) {
-                        remainTime -= 5 * i
+                    for (i in 1..6) {
+                        remainTime -= 5
                         delay(5000)
                         Toast.makeText(context, "$remainTime 초 남았습니다!", Toast.LENGTH_SHORT)
                             .show()
@@ -261,7 +261,9 @@ private fun resizeBitmap(bitmap: Bitmap, targetWidth: Int, targetHeight: Int): B
 }
 
 private fun captureImageAndSendToServer(imageCapture: ImageCapture, context: Context, serverUrl: String, step: Int, walking: Float) {
-    val name = "CameraxImage.png"
+    // 저장명 설정
+    // System.currentTimeMillis()로 실시간 정보를 추가하여 고유 이름부여
+    val name = "CameraxImage_${System.currentTimeMillis()}.png"
     val contentValues = ContentValues().apply {
         put(MediaStore.MediaColumns.DISPLAY_NAME, name)
         put(MediaStore.MediaColumns.MIME_TYPE, "image/png")
