@@ -57,8 +57,12 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import androidx.compose.ui.tooling.preview.Preview as PreviewCompose
 import android.net.Uri
+import android.widget.Toast
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.codehanzoom.greenwalk.MainActivity
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
@@ -152,13 +156,33 @@ fun CameraUI(
 ) {
     // 클릭 이벤트 핸들러
     val handleClick: () -> Unit = {
+        val text = "사진처리중 입니다!"
+        val duration = 30
         // Navigation 처리
+
+        runBlocking {
+            Toast.makeText(context, text, Toast.LENGTH_LONG).show()
+
+            captureImageAndSendToServer(
+                imageCapture,
+                context,
+                "http://aws-v5-beanstalk-env.eba-znduyhtv.ap-northeast-2.elasticbeanstalk.com/",
+                0,
+                0.0f
+            )
+
+            // 30초 delay
+            delay(40000)
+        }
         navController.navigate("HomeScreen")
     }
 
     // 화면정보 불러오기
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
+
+    // Compose 내부에서 사용할 수 있는 코루틴 스코프
+    val coroutineScope = rememberCoroutineScope()
 
     TopBar(title = "사진촬영", navController = navController)
     Column(
@@ -186,20 +210,48 @@ fun CameraUI(
         Image(
             painter = painterResource(id = R.drawable.ic_camera),
             contentDescription = null,
-            Modifier.clickable(onClick = handleClick)
+            Modifier.clickable {
+                // 클릭 시 코루틴을 사용하여 비동기 작업 실행
+                coroutineScope.launch {
+                    Toast.makeText(context, "사진처리중 입니다!", Toast.LENGTH_LONG).show()
+
+                    // 비동기로 이미지 캡처 및 서버 전송
+                    captureImageAndSendToServer(
+                        imageCapture,
+                        context,
+                        "http://aws-v5-beanstalk-env.eba-znduyhtv.ap-northeast-2.elasticbeanstalk.com/",
+                        0,
+                        0.0f
+                    )
+
+                    // 30초 딜레이 후 화면 전환
+                    delay(30000)
+
+                    navController.navigate("HomeScreen")
+                }
+                coroutineScope.launch {
+                    var remainTime = 30
+                    for (i in 1..4) {
+                        remainTime -= 5 * i
+                        delay(5000)
+                        Toast.makeText(context, "$remainTime 초 남았습니다!", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            }
         )
     }
 
-    // 클릭 핸들러 내에서 비동기 작업 수행 (Navigation 이후에 실행되도록)
-    LaunchedEffect(navController.currentBackStackEntryAsState().value) {
-        captureImageAndSendToServer(
-            imageCapture,
-            context,
-            "http://aws-v5-beanstalk-env.eba-znduyhtv.ap-northeast-2.elasticbeanstalk.com/",
-            0,
-            0.0f
-        )
-    }
+//    // 클릭 핸들러 내에서 비동기 작업 수행 (Navigation 이후에 실행되도록)
+//    LaunchedEffect(navController.currentBackStackEntryAsState().value) {
+//        captureImageAndSendToServer(
+//            imageCapture,
+//            context,
+//            "http://aws-v5-beanstalk-env.eba-znduyhtv.ap-northeast-2.elasticbeanstalk.com/",
+//            0,
+//            0.0f
+//        )
+//    }
 }
 
 
