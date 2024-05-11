@@ -36,6 +36,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.codehanzoom.greenwalk.MainActivity
 import com.codehanzoom.greenwalk.R
 import com.codehanzoom.greenwalk.compose.SmallButton
 import com.codehanzoom.greenwalk.nav.BottomNavigation
@@ -43,7 +45,7 @@ import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
 @Composable
 fun  HomeScreen(navController: NavHostController) {
-
+    Log.d("로그인", MainActivity.prefs.getString("accessToken", ""))
     Scaffold(
         topBar = {
             areaHeader()
@@ -254,6 +256,7 @@ fun ploggingButton(navController: NavHostController) {
 @Preview
 fun PreviewHome() {
     GreenWalkTheme {
-//        Main()
+        val navController = rememberNavController()
+        HomeScreen(navController)
     }
 }
