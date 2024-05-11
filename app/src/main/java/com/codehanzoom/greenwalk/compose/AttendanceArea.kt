@@ -10,12 +10,16 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
+import com.codehanzoom.greenwalk.ui.theme.GW_Green100
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
+import java.util.Calendar
+import java.util.Date
 
 @Composable
 fun AttendanceArea() {
@@ -41,10 +45,33 @@ fun AttendanceArea() {
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                for (i: Int in 1..7) {
-                    Column {
-                        Text("월")
-                        Text("1")
+                // 오늘(Today) 받기
+                val currentTime: Date = Calendar.getInstance().time
+                // 요일(Day) 목록
+                val dayList: List<String> = listOf("일", "월", "화", "수", "목", "금", "토")
+                val todayDate = currentTime.date
+                val todayDay = currentTime.day
+
+                // 앞 3일 표시
+                for (i: Int in -3..3) {
+                    Column (
+                        modifier = Modifier
+                            .padding(3.dp)
+                    ){
+                        if (i == 0) {
+                            Text("${dayList[(todayDay+i+7)%7]}",
+                                modifier = Modifier
+                                    .drawBehind {
+                                        drawRect(
+                                            color = GW_Green100
+                                        )
+                                    }
+                            )
+                        }
+                        else {
+                            Text("${dayList[(todayDay+i+7)%7]}")
+                        }
+                        Text("${todayDate+i}")
                     }
                 }
             }

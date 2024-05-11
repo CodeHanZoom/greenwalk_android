@@ -45,7 +45,7 @@ import androidx.navigation.compose.rememberNavController
 import com.codehanzoom.greenwalk.MainActivity
 import com.codehanzoom.greenwalk.R
 import com.codehanzoom.greenwalk.compose.AttendanceArea
-import com.codehanzoom.greenwalk.compose.SmallButton
+import com.codehanzoom.greenwalk.compose.DonationListArea
 import com.codehanzoom.greenwalk.model.UserInfoResponseBody
 import com.codehanzoom.greenwalk.nav.BottomNavigation
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
@@ -111,7 +111,7 @@ fun  HomeScreen(navController: NavHostController) {
 
                 areaCheer(name = userInfo?.name)
 
-                areaListOfDonations()
+                DonationListArea()
             }
 
         }
@@ -188,32 +188,6 @@ fun areaCheer(name: String? = "나희수") {
             .fillMaxWidth()
             .padding(10.dp)
     )
-}
-
-@Composable
-fun areaListOfDonations() {
-    for (i: Int in 1..8) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text("Picture")
-                Column(
-                    modifier = Modifier.width(50.dp)
-                ) {
-                    Text("기부처")
-                    Text("500P")
-                }
-
-                SmallButton("기부하기")
-            }
-        }
-    }
 }
 
 @Composable
