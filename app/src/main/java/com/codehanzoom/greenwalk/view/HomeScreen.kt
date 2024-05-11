@@ -44,6 +44,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.codehanzoom.greenwalk.MainActivity
 import com.codehanzoom.greenwalk.R
+import com.codehanzoom.greenwalk.compose.AttendanceArea
 import com.codehanzoom.greenwalk.compose.SmallButton
 import com.codehanzoom.greenwalk.model.UserInfoResponseBody
 import com.codehanzoom.greenwalk.nav.BottomNavigation
@@ -106,7 +107,7 @@ fun  HomeScreen(navController: NavHostController) {
                     totalWalkingDistance = userInfo?.totalWalkingDistance,
                     grade = "GOLD")
 
-                areaAttendance()
+                AttendanceArea()
 
                 areaCheer(name = userInfo?.name)
 
@@ -176,41 +177,6 @@ fun areaMyInfo(name: String?="나희수",
                 fontWeight = FontWeight.Bold
             )
             Text("플로깅 거리")
-        }
-    }
-}
-
-@Composable
-fun areaAttendance() {
-    Card(
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
-        ), modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp),
-        colors = CardDefaults.cardColors(Color.White)
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(10.dp)
-        ) {
-            Text(
-                text = "출석체크",
-                color = Color("#8CB369".toColorInt()),
-                fontWeight = FontWeight.Bold
-            )
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                for (i: Int in 1..7) {
-                    Column {
-                        Text("월")
-                        Text("1")
-                    }
-                }
-            }
         }
     }
 }
