@@ -25,6 +25,11 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -44,30 +49,36 @@ import com.codehanzoom.greenwalk.model.UserInfoResponseBody
 import com.codehanzoom.greenwalk.nav.BottomNavigation
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 import com.codehanzoom.greenwalk.utils.RetrofitClient
+import kotlinx.coroutines.async
 import retrofit2.Call
 import retrofit2.Response
 
 @Composable
 fun  HomeScreen(navController: NavHostController) {
-    val accessToken = MainActivity.prefs.getString("accessToken", "")
-    RetrofitClient.instance.getUserInfo("Bearer $accessToken").enqueue(object : retrofit2.Callback<UserInfoResponseBody> {
-        override fun onResponse(call: Call<UserInfoResponseBody>, response: Response<UserInfoResponseBody>) {
-            if (response.isSuccessful) {
-                // 성공적으로 데이터를 받음
-                val userProfile = response.body()
-                println("User Name: ${userProfile?.name}")
-                println("Email: ${userProfile?.email}")
-            } else {
-                // 서버 에러 처리
-                println("Response Error : ${response.errorBody()?.string()}")
-            }
-        }
+    var accessToken by remember { mutableStateOf(MainActivity.prefs.getString("accessToken", "")) }
+    var userInfo by remember { mutableStateOf<UserInfoResponseBody?>(null) }
 
-        override fun onFailure(call: Call<UserInfoResponseBody>, t: Throwable) {
-            // 네트워크 에러 처리
-            println("Network Error : ${t.message}")
+    LaunchedEffect(accessToken) {
+        if (accessToken.isNotEmpty()) {
+            RetrofitClient.instance.getUserInfo("Bearer $accessToken").enqueue(object : retrofit2.Callback<UserInfoResponseBody> {
+                override fun onResponse(call: Call<UserInfoResponseBody>, response: Response<UserInfoResponseBody>) {
+                    if (response.isSuccessful) {
+                        val userInfoHolder = async{response.body()}
+                        userInfo = userInfoHolder.await()
+                        Log.d("HomeScreen", "User Name: ${userInfo?.name}")
+                        Log.d("HomeScreen", "Email: ${userInfo?.email}")
+                    } else {
+                        Log.e("HomeScreen", "Response Error : ${response.errorBody()?.string()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<UserInfoResponseBody>, t: Throwable) {
+                    Log.e("HomeScreen", "Network Error : ${t.message}")
+                }
+            })
         }
-    })
+    }
+
     Log.d("로그인", MainActivity.prefs.getString("accessToken", ""))
     Scaffold(
         topBar = {
@@ -89,7 +100,7 @@ fun  HomeScreen(navController: NavHostController) {
                     .padding(10.dp)
                     .verticalScroll(rememberScrollState())
             ) {
-                areaMyInfo(name = "나희수", ploggingCount = 328, grade = "GOLD")
+                areaMyInfo(name = userInfo?.name, ploggingCount = 328, grade = "GOLD")
 
                 areaAttendance()
 
@@ -126,7 +137,7 @@ fun areaHeader() {
 }
 
 @Composable
-fun areaMyInfo(name: String, ploggingCount: Int, grade: String) {
+fun areaMyInfo(name: String?, ploggingCount: Int, grade: String) {
     Card(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
