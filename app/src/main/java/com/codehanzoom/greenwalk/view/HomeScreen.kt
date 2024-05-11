@@ -49,7 +49,6 @@ import com.codehanzoom.greenwalk.model.UserInfoResponseBody
 import com.codehanzoom.greenwalk.nav.BottomNavigation
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 import com.codehanzoom.greenwalk.utils.RetrofitClient
-import kotlinx.coroutines.async
 import retrofit2.Call
 import retrofit2.Response
 
@@ -62,9 +61,10 @@ fun  HomeScreen(navController: NavHostController) {
         if (accessToken.isNotEmpty()) {
             RetrofitClient.instance.getUserInfo("Bearer $accessToken").enqueue(object : retrofit2.Callback<UserInfoResponseBody> {
                 override fun onResponse(call: Call<UserInfoResponseBody>, response: Response<UserInfoResponseBody>) {
+                    println(response.body()?.name)
                     if (response.isSuccessful) {
-                        val userInfoHolder = async{response.body()}
-                        userInfo = userInfoHolder.await()
+                        userInfo = response.body()
+                        Log.d("HomeScreen", accessToken.toString())
                         Log.d("HomeScreen", "User Name: ${userInfo?.name}")
                         Log.d("HomeScreen", "Email: ${userInfo?.email}")
                     } else {
@@ -100,11 +100,15 @@ fun  HomeScreen(navController: NavHostController) {
                     .padding(10.dp)
                     .verticalScroll(rememberScrollState())
             ) {
-                areaMyInfo(name = userInfo?.name, ploggingCount = 328, grade = "GOLD")
+                areaMyInfo(name = userInfo?.name,
+                    ploggingCount = userInfo?.totalStep,
+                    totalPoint = userInfo?.totalPoint,
+                    totalWalkingDistance = userInfo?.totalWalkingDistance,
+                    grade = "GOLD")
 
                 areaAttendance()
 
-                areaCheer(name = "나희수")
+                areaCheer(name = userInfo?.name)
 
                 areaListOfDonations()
             }
@@ -137,7 +141,11 @@ fun areaHeader() {
 }
 
 @Composable
-fun areaMyInfo(name: String?, ploggingCount: Int, grade: String) {
+fun areaMyInfo(name: String?="나희수",
+               ploggingCount: Int?=-1,
+               totalPoint: Int?=-1,
+               totalWalkingDistance: Int?=-1,
+               grade: String?="Bronze") {
     Card(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
@@ -156,14 +164,14 @@ fun areaMyInfo(name: String?, ploggingCount: Int, grade: String) {
             Text("현재 " + name + " 님은 " + grade + "등급 입니다.")
             Spacer(modifier = Modifier.height(10.dp))
             Text(
-                "P",
+                "$totalPoint P",
                 color = Color("#8CB369".toColorInt()),
                 fontWeight = FontWeight.Bold
             )
             Text("보유 포인트")
             Spacer(modifier = Modifier.height(5.dp))
             Text(
-                "Km",
+                "$totalWalkingDistance Km",
                 color = Color("#8CB369".toColorInt()),
                 fontWeight = FontWeight.Bold
             )
@@ -208,7 +216,7 @@ fun areaAttendance() {
 }
 
 @Composable
-fun areaCheer(name: String) {
+fun areaCheer(name: String? = "나희수") {
     Text(
         "$name 님,\n플로깅해서 모은 포인트를 기부해보세요!", modifier = Modifier
             .fillMaxWidth()
