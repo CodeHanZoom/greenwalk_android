@@ -45,7 +45,7 @@ fun DonationListArea() {
                         Text("500P")
                     }
 
-                    SmallButton("기부하기")
+                    SmallButton("기부")
                 }
             }
         }

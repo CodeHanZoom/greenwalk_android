@@ -55,7 +55,9 @@ import retrofit2.Response
 
 @Composable
 fun  HomeScreen(navController: NavHostController) {
+    // accessToken 저장
     var accessToken by remember { mutableStateOf(MainActivity.prefs.getString("accessToken", "")) }
+    // userInfo 저장
     var userInfo by remember { mutableStateOf<UserInfoResponseBody?>(null) }
 
     LaunchedEffect(accessToken) {
