@@ -1,8 +1,6 @@
-package com.codehanzoom.greenwalk
+package com.codehanzoom.greenwalk.api
 
-import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -10,7 +8,6 @@ import android.hardware.SensorManager
 import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
 
 class SensorClient(private val context: Context, private val listener: StepCountListener) : SensorEventListener {
 
@@ -27,10 +24,10 @@ class SensorClient(private val context: Context, private val listener: StepCount
     @RequiresApi(api = Build.VERSION_CODES.Q)
     fun initialize() {
         // 활동 퍼미션 체크
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_DENIED) {
-            Toast.makeText(context, "Activity recognition permission denied", Toast.LENGTH_SHORT).show()
-            return
-        }
+//        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_DENIED) {
+//            Toast.makeText(context, "Activity recognition permission denied", Toast.LENGTH_SHORT).show()
+//            return
+//        }
 
         // 걸음 센서 연결
         sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager

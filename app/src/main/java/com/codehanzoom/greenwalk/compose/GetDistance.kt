@@ -1,3 +1,5 @@
+package com.codehanzoom.greenwalk.compose
+
 import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
@@ -7,7 +9,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.codehanzoom.greenwalk.ui.theme.zenDots
+import com.codehanzoom.greenwalk.viewModel.PloggingViewModel
 import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationCallback
@@ -18,6 +22,7 @@ fun GetDistance() {
     val context = LocalContext.current as Activity
     val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
     val LOCATION_PERMISSION_REQUEST_CODE = 100
+    val viewModel: PloggingViewModel = viewModel()
 
     var previousLocation: android.location.Location? = null
 
@@ -39,6 +44,7 @@ fun GetDistance() {
                 for (location in locationResult.locations) {
                     // 새로운 위치가 감지될 때마다 거리를 업데이트
                     updateDistance(location)
+                    viewModel.setTotalDistance(totalDistance)
                 }
             }
         }

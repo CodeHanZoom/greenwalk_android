@@ -1,9 +1,8 @@
 package com.codehanzoom.greenwalk.view
 
-import GetDistance
-import GetStep
-import GetTime
-import PloggingViewModel
+import com.codehanzoom.greenwalk.compose.GetDistance
+import com.codehanzoom.greenwalk.compose.GetStep
+import com.codehanzoom.greenwalk.compose.GetTime
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
@@ -20,7 +19,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -89,7 +87,7 @@ fun PloggingScreen(navController: NavHostController) {
                     .height(80.dp)
             ) {
                 // 걸음수 컴포즈
-                GetStep(PloggingViewModel())
+                GetStep()
                 Text(
                     text = "걸음수",
                     fontFamily = inter,

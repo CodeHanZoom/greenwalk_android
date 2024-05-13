@@ -1,7 +1,6 @@
 package com.codehanzoom.greenwalk.view
 
-import GetStep
-import PloggingViewModel
+import com.codehanzoom.greenwalk.viewModel.PloggingViewModel
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,7 +43,7 @@ fun RecordScreen(navController: NavHostController) {
         Spacer(modifier = Modifier.height(30.dp))
         CompleteSentence()
         Spacer(modifier = Modifier.height(50.dp))
-        PloggingInfo()
+        PloggingInfo(PloggingViewModel())
         Spacer(modifier = Modifier.height(30.dp))
         LargeButton(title = "사진촬영하기") {
             navController.navigate("CameraScreen")
@@ -95,7 +93,7 @@ fun CompleteSentence() {
 
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
-fun PloggingInfo() {
+fun PloggingInfo(viewModel: PloggingViewModel) {
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -106,17 +104,29 @@ fun PloggingInfo() {
             .padding(20.dp)
     ) {
         Text(
+            text = viewModel.getTime(),
+            fontFamily = zenDots,
+            color = Color.White,
+            fontSize = 34.sp,
+        )
+        Text(
             text = "시간",
             fontFamily = inter,
             color = GW_Black100,
             fontSize = 12.sp)
+        Text(
+            text = String.format("%.1f"+" m", viewModel.getTotalDistance()),
+            fontFamily = zenDots,
+            color = Color.White,
+            fontSize = 34.sp,
+        )
         Text(
             text = "거리",
             fontFamily = inter,
             color = GW_Black100,
             fontSize = 12.sp)
         Text(
-            text = "${PloggingViewModel().totalSteps}",
+            text = "${viewModel.getTotalStep()} stpes",
             fontFamily = zenDots,
             color = Color.White,
             fontSize = 34.sp,
