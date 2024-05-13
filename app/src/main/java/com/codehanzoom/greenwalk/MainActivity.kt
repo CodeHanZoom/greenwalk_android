@@ -1,23 +1,30 @@
 package com.codehanzoom.greenwalk
 
+import android.os.Build
 import com.codehanzoom.greenwalk.api.SharedPreferencesManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.codehanzoom.greenwalk.nav.NavigationGraph
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 import com.codehanzoom.greenwalk.utils.CameraPermissionHandler
 
 class MainActivity : ComponentActivity() {
+
     private lateinit var cameraPermissionHandler: CameraPermissionHandler
 
     companion object {
         lateinit var prefs: SharedPreferencesManager
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
+    @Override
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+
         // cameraPermission request
         cameraPermissionHandler = CameraPermissionHandler(this)
         cameraPermissionHandler.checkCameraPermission()
@@ -26,7 +33,7 @@ class MainActivity : ComponentActivity() {
         prefs = SharedPreferencesManager(applicationContext)
 
         // splash screen 적용
-        // setContent 전에 실행
+        // setContent 전(에 실행
         installSplashScreen()
 
         setContent {
@@ -35,6 +42,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,

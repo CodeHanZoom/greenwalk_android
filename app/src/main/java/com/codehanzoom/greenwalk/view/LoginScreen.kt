@@ -37,8 +37,10 @@ import androidx.navigation.compose.rememberNavController
 import com.codehanzoom.greenwalk.compose.Logo
 import com.codehanzoom.greenwalk.compose.MaxWidthButton
 import com.codehanzoom.greenwalk.compose.TopBar
+import com.codehanzoom.greenwalk.model.LoginRequestBody
 import com.codehanzoom.greenwalk.ui.theme.GW_Red200
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
+import com.codehanzoom.greenwalk.viewModel.LoginViewModel
 
 @Composable
 fun LoginScreen(navController: NavHostController) {
@@ -82,16 +84,16 @@ fun LoginScreen(navController: NavHostController) {
         Spacer(modifier = Modifier.height(80.dp))
         MaxWidthButton(title = "로그인") {
 
-//            if(email.isEmpty() || password.isEmpty()) {
-//                isEmpty = true
-//                errorMessage = "이메일 또는 비밀번호를 다시 확인해 주세요."
-//            } else {
-//                isEmpty = false
-//                errorMessage = ""
-//
-//                val userData = LoginRequestBody(email, password)
-//                LoginViewModel(userData).retrofitWork(navController=navController)
-//            }
+            if(email.isEmpty() || password.isEmpty()) {
+                isEmpty = true
+                errorMessage = "이메일 또는 비밀번호를 다시 확인해 주세요."
+            } else {
+                isEmpty = false
+                errorMessage = ""
+
+                val userData = LoginRequestBody(email, password)
+                LoginViewModel(userData).retrofitWork(navController=navController)
+            }
             navController.navigate("HomeScreen")
         }
         Spacer(modifier = Modifier.height(20.dp))

@@ -1,6 +1,8 @@
 package com.codehanzoom.greenwalk.nav
 
 import StartScreen
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.BottomNavigationItem
@@ -28,11 +30,12 @@ import com.codehanzoom.greenwalk.view.PloggingScreen
 import com.codehanzoom.greenwalk.view.RecordScreen
 import com.codehanzoom.greenwalk.view.SignUpScreen
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun NavigationGraph() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "StartScreen") {
+    NavHost(navController = navController, startDestination = "PloggingScreen") {
 
         composable("StartScreen") {
             StartScreen(navController = navController)

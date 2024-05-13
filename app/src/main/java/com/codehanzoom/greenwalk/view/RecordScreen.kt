@@ -1,5 +1,9 @@
 package com.codehanzoom.greenwalk.view
 
+import GetStep
+import PloggingViewModel
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,32 +23,30 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.codehanzoom.greenwalk.R
 import com.codehanzoom.greenwalk.compose.LargeButton
 import com.codehanzoom.greenwalk.compose.TopBar
+import com.codehanzoom.greenwalk.ui.theme.GW_Black100
 import com.codehanzoom.greenwalk.ui.theme.GW_Green100
-import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
+import com.codehanzoom.greenwalk.ui.theme.inter
+import com.codehanzoom.greenwalk.ui.theme.zenDots
 
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun RecordScreen(navController: NavHostController) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TopBar(title = "기록", navController = navController)
-        Spacer(modifier = Modifier
-            .height(30.dp))
+        Spacer(modifier = Modifier.height(30.dp))
         CompleteSentence()
-        Spacer(modifier = Modifier
-            .height(30.dp))
+        Spacer(modifier = Modifier.height(50.dp))
         PloggingInfo()
-        Spacer(modifier = Modifier
-            .height(30.dp))
+        Spacer(modifier = Modifier.height(30.dp))
         LargeButton(title = "사진촬영하기") {
             navController.navigate("CameraScreen")
         }
@@ -57,7 +60,7 @@ fun CompleteSentence() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
-            .height(222.dp)
+            .height(220.dp)
     ) {
         Image(
             painterResource(id = R.drawable.ic_plogging_clear),
@@ -90,48 +93,38 @@ fun CompleteSentence() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun PloggingInfo() {
+
     Column(
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
-            .height(300.dp)
-            .background(GW_Green100, shape= RoundedCornerShape(10.dp))
+            .height(250.dp)
+            .background(GW_Green100, shape = RoundedCornerShape(10.dp))
             .width(320.dp)
             .padding(20.dp)
     ) {
         Text(
-            text = "00 : 00",
-            color = Color.White,
-            fontSize = 40.sp,
-            fontWeight = FontWeight.Bold
-        )
-        Text(text = "시간")
+            text = "시간",
+            fontFamily = inter,
+            color = GW_Black100,
+            fontSize = 12.sp)
         Text(
-            text = "0.00 km",
-            color = Color.White,
-            fontSize = 40.sp,
-            fontWeight = FontWeight.Bold
-        )
-        Text(text = "킬로미터")
+            text = "거리",
+            fontFamily = inter,
+            color = GW_Black100,
+            fontSize = 12.sp)
         Text(
-            text = "0000 steps",
+            text = "${PloggingViewModel().totalSteps}",
+            fontFamily = zenDots,
             color = Color.White,
-            fontSize = 40.sp,
-            fontWeight = FontWeight.Bold
+            fontSize = 34.sp,
         )
-        Text(text = "걸음수")
-    }
-}
-
-@Composable
-@Preview(
-    showSystemUi = true,
-    showBackground = true
-)
-fun PreivewRecordScreen() {
-    GreenWalkTheme {
-        val navController = rememberNavController()
-        RecordScreen(navController = navController)
+        Text(
+            text = "걸음수",
+            fontFamily = inter,
+            color = GW_Black100,
+            fontSize = 12.sp)
     }
 }
