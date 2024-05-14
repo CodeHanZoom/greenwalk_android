@@ -36,14 +36,39 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.codehanzoom.greenwalk.MainActivity
 import com.codehanzoom.greenwalk.R
 import com.codehanzoom.greenwalk.compose.SmallButton
+import com.codehanzoom.greenwalk.model.UserInfoResponseBody
 import com.codehanzoom.greenwalk.nav.BottomNavigation
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
+import com.codehanzoom.greenwalk.utils.RetrofitClient
+import retrofit2.Call
+import retrofit2.Response
 
 @Composable
 fun  HomeScreen(navController: NavHostController) {
+    val accessToken = MainActivity.prefs.getString("accessToken", "")
+    RetrofitClient.instance.getUserInfo("Bearer $accessToken").enqueue(object : retrofit2.Callback<UserInfoResponseBody> {
+        override fun onResponse(call: Call<UserInfoResponseBody>, response: Response<UserInfoResponseBody>) {
+            if (response.isSuccessful) {
+                // 성공적으로 데이터를 받음
+                val userProfile = response.body()
+                println("User Name: ${userProfile?.name}")
+                println("Email: ${userProfile?.email}")
+            } else {
+                // 서버 에러 처리
+                println("Response Error : ${response.errorBody()?.string()}")
+            }
+        }
 
+        override fun onFailure(call: Call<UserInfoResponseBody>, t: Throwable) {
+            // 네트워크 에러 처리
+            println("Network Error : ${t.message}")
+        }
+    })
+    Log.d("로그인", MainActivity.prefs.getString("accessToken", ""))
     Scaffold(
         topBar = {
             areaHeader()
@@ -254,6 +279,7 @@ fun ploggingButton(navController: NavHostController) {
 @Preview
 fun PreviewHome() {
     GreenWalkTheme {
-//        Main()
+        val navController = rememberNavController()
+        HomeScreen(navController)
     }
 }

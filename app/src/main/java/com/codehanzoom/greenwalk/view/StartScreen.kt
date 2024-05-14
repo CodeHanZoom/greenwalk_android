@@ -1,3 +1,4 @@
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,7 +16,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.codehanzoom.greenwalk.R
 import com.codehanzoom.greenwalk.compose.LargeButton
-import com.codehanzoom.greenwalk.compose.Logo
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
 @Composable
@@ -33,7 +33,6 @@ fun StartScreen(navController: NavHostController) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(120.dp))
-        Logo()
         Spacer(modifier = Modifier.height(500.dp))
 
         LargeButton(title = "시작하기") {

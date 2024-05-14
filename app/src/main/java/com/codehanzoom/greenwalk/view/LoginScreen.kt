@@ -1,7 +1,9 @@
 package com.codehanzoom.greenwalk.view
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,7 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -34,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.codehanzoom.greenwalk.compose.Logo
+import com.codehanzoom.greenwalk.R
 import com.codehanzoom.greenwalk.compose.MaxWidthButton
 import com.codehanzoom.greenwalk.compose.TopBar
 import com.codehanzoom.greenwalk.model.LoginRequestBody
@@ -55,7 +57,16 @@ fun LoginScreen(navController: NavHostController) {
     ) {
         TopBar(title = "", navController = navController)
         Spacer(modifier = Modifier.height(60.dp))
-        Logo()
+        Box (
+            modifier = Modifier
+                .fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ){
+            Image(
+                painter = painterResource(id = R.drawable.ic_logo),
+                contentDescription = null
+            )
+        }
         Spacer(modifier = Modifier.height(230.dp))
         LoginTextField(
             title = "이메일",
