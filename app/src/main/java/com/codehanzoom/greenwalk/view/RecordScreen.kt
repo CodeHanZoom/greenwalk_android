@@ -1,5 +1,8 @@
 package com.codehanzoom.greenwalk.view
 
+import com.codehanzoom.greenwalk.viewModel.PloggingViewModel
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,32 +21,30 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.codehanzoom.greenwalk.R
 import com.codehanzoom.greenwalk.compose.LargeButton
 import com.codehanzoom.greenwalk.compose.TopBar
+import com.codehanzoom.greenwalk.ui.theme.GW_Black100
 import com.codehanzoom.greenwalk.ui.theme.GW_Green100
-import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
+import com.codehanzoom.greenwalk.ui.theme.inter
+import com.codehanzoom.greenwalk.ui.theme.zenDots
 
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun RecordScreen(navController: NavHostController) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TopBar(title = "기록", navController = navController)
-        Spacer(modifier = Modifier
-            .height(30.dp))
+        Spacer(modifier = Modifier.height(30.dp))
         CompleteSentence()
-        Spacer(modifier = Modifier
-            .height(30.dp))
-        PloggingInfo()
-        Spacer(modifier = Modifier
-            .height(30.dp))
+        Spacer(modifier = Modifier.height(50.dp))
+        PloggingInfo(PloggingViewModel())
+        Spacer(modifier = Modifier.height(30.dp))
         LargeButton(title = "사진촬영하기") {
             navController.navigate("CameraScreen")
         }
@@ -57,7 +58,7 @@ fun CompleteSentence() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
-            .height(222.dp)
+            .height(220.dp)
     ) {
         Image(
             painterResource(id = R.drawable.ic_plogging_clear),
@@ -90,48 +91,50 @@ fun CompleteSentence() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
-fun PloggingInfo() {
+fun PloggingInfo(viewModel: PloggingViewModel) {
+
     Column(
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
-            .height(300.dp)
-            .background(GW_Green100, shape= RoundedCornerShape(10.dp))
+            .height(250.dp)
+            .background(GW_Green100, shape = RoundedCornerShape(10.dp))
             .width(320.dp)
             .padding(20.dp)
     ) {
         Text(
-            text = "00 : 00",
+            text = viewModel.getTime(),
+            fontFamily = zenDots,
             color = Color.White,
-            fontSize = 40.sp,
-            fontWeight = FontWeight.Bold
+            fontSize = 34.sp,
         )
-        Text(text = "시간")
         Text(
-            text = "0.00 km",
-            color = Color.White,
-            fontSize = 40.sp,
-            fontWeight = FontWeight.Bold
-        )
-        Text(text = "킬로미터")
+            text = "시간",
+            fontFamily = inter,
+            color = GW_Black100,
+            fontSize = 12.sp)
         Text(
-            text = "0000 steps",
+            text = String.format("%.1f"+" m", viewModel.getTotalDistance()),
+            fontFamily = zenDots,
             color = Color.White,
-            fontSize = 40.sp,
-            fontWeight = FontWeight.Bold
+            fontSize = 34.sp,
         )
-        Text(text = "걸음수")
-    }
-}
-
-@Composable
-@Preview(
-    showSystemUi = true,
-    showBackground = true
-)
-fun PreivewRecordScreen() {
-    GreenWalkTheme {
-        val navController = rememberNavController()
-        RecordScreen(navController = navController)
+        Text(
+            text = "거리",
+            fontFamily = inter,
+            color = GW_Black100,
+            fontSize = 12.sp)
+        Text(
+            text = "${viewModel.getTotalStep()} stpes",
+            fontFamily = zenDots,
+            color = Color.White,
+            fontSize = 34.sp,
+        )
+        Text(
+            text = "걸음수",
+            fontFamily = inter,
+            color = GW_Black100,
+            fontSize = 12.sp)
     }
 }

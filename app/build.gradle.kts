@@ -1,7 +1,14 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import java.io.FileInputStream
+import java.util.Properties
+
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
+
 
 android {
     namespace = "com.codehanzoom.greenwalk"
@@ -9,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId = "com.codehanzoom.greenwalk"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -18,6 +25,12 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        // manifest의 placeholder로 local.properties에 저장된 google map api key 전달
+//        val properties = Properties().apply {
+//            load(FileInputStream(rootProject.file("local.properties")))
+//        }
+//        manifestPlaceholders["GOOGLE_MAPS_API_KEY"] = properties.getProperty("google_map_key")
     }
 
     buildTypes {
@@ -30,11 +43,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
@@ -49,6 +62,7 @@ android {
         }
     }
 }
+
 
 dependencies {
     // retrofit2
@@ -66,10 +80,11 @@ dependencies {
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.activity:activity:1.8.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
     val nav_version = "2.7.7"
     // camerax
     // Camerax implementation
-    val cameraxVersion = "1.3.1"
+    val cameraxVersion = "1.3.3"
     implementation ("androidx.camera:camera-core:${cameraxVersion}")
     implementation ("androidx.camera:camera-camera2:${cameraxVersion}")
     implementation ("androidx.camera:camera-view:${cameraxVersion}")
@@ -112,5 +127,17 @@ dependencies {
 
     // Splash
     implementation ("androidx.core:core-splashscreen:1.0.1")
+
+    // 네이버 지도 SDK
+    implementation ("io.github.fornewid:naver-map-compose:1.7.0")
+    implementation ("io.github.fornewid:naver-map-location:21.0.2")
+
+    // 구글 피트니스 SDK
+    implementation("com.google.android.gms:play-services-fitness:21.1.0")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("com.google.android.gms:play-services-location:18.0.0")
+
+    // 카메라 쪽에서 에러가 나서 구글링해보니 아래 의존성을 추가하라고 함 이유는 모르겠다
+    implementation ("com.google.guava:guava:31.0.1-android")
 
 }

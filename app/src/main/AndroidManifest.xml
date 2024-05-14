@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- 외부저장소 쓰기읽기 관련 권한 -->
@@ -12,7 +11,12 @@
     <!--  http 통신을 하기위해 인터넷 관련 퍼미션을 추가  -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission-sdk-23 android:name="android.permission.INTERNET"/>
-
+    <!--  위치 정보 액세스 권한 퍼미션-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!--  Google fit 퍼미션  -->
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
+<!--    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />-->
 
     <application
         android:usesCleartextTraffic="true"
@@ -25,17 +29,51 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GreenWalk"
         tools:targetApi="31">
+        <!--  Naver Maps API  -->
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="adpug8dh6g" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.App.Starting">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!--
+                The app needs to handle this intent and display an appropriate privacy policy
+                explaining how the user's data will be used and handled.
+
+                This intent is sent to the app when the user clicks on the "privacy policy" link
+                in the Health Connect permissions dialog.
+            -->
+            <intent-filter>
+                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+            </intent-filter>
+
+            <!-- Permission handling for Android 14 -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE"/>
+                <category android:name="android.intent.category.HEALTH_PERMISSIONS"/>
             </intent-filter>
         </activity>
     </application>
+
+    <queries>
+        <package android:name="com.google.android.apps.healthdata" />
+
+        <!--
+             This is required such that the app can query and resolve packages that have written
+             Health Connect data, and obtain their friendly App Name and Icon to show for data
+             attribution in the app
+        -->
+        <intent>
+            <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+        </intent>
+    </queries>
 
 </manifest>
