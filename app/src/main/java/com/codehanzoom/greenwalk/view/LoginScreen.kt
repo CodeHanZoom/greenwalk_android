@@ -105,7 +105,6 @@ fun LoginScreen(navController: NavHostController) {
                 val userData = LoginRequestBody(email, password)
                 LoginViewModel(userData).retrofitWork(navController=navController)
             }
-            navController.navigate("HomeScreen")
         }
         Spacer(modifier = Modifier.height(20.dp))
         BottomContainer(navController = navController)
