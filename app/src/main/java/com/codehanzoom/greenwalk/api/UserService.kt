@@ -6,7 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 
 interface UserService {
-    @GET("userinfo")
+    @GET("userInfo")
     fun getUserInfo(
         @Header("Authorization") accessToken: String
     ): Call<UserInfoResponseBody>

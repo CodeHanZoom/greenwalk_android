@@ -25,6 +25,11 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -39,7 +44,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.codehanzoom.greenwalk.MainActivity
 import com.codehanzoom.greenwalk.R
-import com.codehanzoom.greenwalk.compose.SmallButton
+import com.codehanzoom.greenwalk.compose.AttendanceArea
+import com.codehanzoom.greenwalk.compose.DonationListArea
 import com.codehanzoom.greenwalk.model.UserInfoResponseBody
 import com.codehanzoom.greenwalk.nav.BottomNavigation
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
@@ -49,25 +55,33 @@ import retrofit2.Response
 
 @Composable
 fun  HomeScreen(navController: NavHostController) {
-    val accessToken = MainActivity.prefs.getString("accessToken", "")
-    RetrofitClient.instance.getUserInfo("Bearer $accessToken").enqueue(object : retrofit2.Callback<UserInfoResponseBody> {
-        override fun onResponse(call: Call<UserInfoResponseBody>, response: Response<UserInfoResponseBody>) {
-            if (response.isSuccessful) {
-                // 성공적으로 데이터를 받음
-                val userProfile = response.body()
-                println("User Name: ${userProfile?.name}")
-                println("Email: ${userProfile?.email}")
-            } else {
-                // 서버 에러 처리
-                println("Response Error : ${response.errorBody()?.string()}")
-            }
-        }
+    // accessToken 저장
+    var accessToken by remember { mutableStateOf(MainActivity.prefs.getString("accessToken", "")) }
+    // userInfo 저장
+    var userInfo by remember { mutableStateOf<UserInfoResponseBody?>(null) }
 
-        override fun onFailure(call: Call<UserInfoResponseBody>, t: Throwable) {
-            // 네트워크 에러 처리
-            println("Network Error : ${t.message}")
+    LaunchedEffect(accessToken) {
+        if (accessToken.isNotEmpty()) {
+            RetrofitClient.instance.getUserInfo("Bearer $accessToken").enqueue(object : retrofit2.Callback<UserInfoResponseBody> {
+                override fun onResponse(call: Call<UserInfoResponseBody>, response: Response<UserInfoResponseBody>) {
+                    println(response.body()?.name)
+                    if (response.isSuccessful) {
+                        userInfo = response.body()
+                        Log.d("HomeScreen", accessToken.toString())
+                        Log.d("HomeScreen", "User Name: ${userInfo?.name}")
+                        Log.d("HomeScreen", "Email: ${userInfo?.email}")
+                    } else {
+                        Log.e("HomeScreen", "Response Error : ${response.errorBody()?.string()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<UserInfoResponseBody>, t: Throwable) {
+                    Log.e("HomeScreen", "Network Error : ${t.message}")
+                }
+            })
         }
-    })
+    }
+
     Log.d("로그인", MainActivity.prefs.getString("accessToken", ""))
     Scaffold(
         topBar = {
@@ -89,13 +103,17 @@ fun  HomeScreen(navController: NavHostController) {
                     .padding(10.dp)
                     .verticalScroll(rememberScrollState())
             ) {
-                areaMyInfo(name = "나희수", ploggingCount = 328, grade = "GOLD")
+                areaMyInfo(name = userInfo?.name,
+                    ploggingCount = userInfo?.totalStep,
+                    totalPoint = userInfo?.totalPoint,
+                    totalWalkingDistance = userInfo?.totalWalkingDistance,
+                    grade = "GOLD")
 
-                areaAttendance()
+                AttendanceArea()
 
-                areaCheer(name = "나희수")
+                areaCheer(name = userInfo?.name)
 
-                areaListOfDonations()
+                DonationListArea()
             }
 
         }
@@ -126,7 +144,11 @@ fun areaHeader() {
 }
 
 @Composable
-fun areaMyInfo(name: String, ploggingCount: Int, grade: String) {
+fun areaMyInfo(name: String?="나희수",
+               ploggingCount: Int?=-1,
+               totalPoint: Int?=-1,
+               totalWalkingDistance: Int?=-1,
+               grade: String?="Bronze") {
     Card(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
@@ -145,14 +167,14 @@ fun areaMyInfo(name: String, ploggingCount: Int, grade: String) {
             Text("현재 " + name + " 님은 " + grade + "등급 입니다.")
             Spacer(modifier = Modifier.height(10.dp))
             Text(
-                "P",
+                "$totalPoint P",
                 color = Color("#8CB369".toColorInt()),
                 fontWeight = FontWeight.Bold
             )
             Text("보유 포인트")
             Spacer(modifier = Modifier.height(5.dp))
             Text(
-                "Km",
+                "$totalWalkingDistance Km",
                 color = Color("#8CB369".toColorInt()),
                 fontWeight = FontWeight.Bold
             )
@@ -162,73 +184,12 @@ fun areaMyInfo(name: String, ploggingCount: Int, grade: String) {
 }
 
 @Composable
-fun areaAttendance() {
-    Card(
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
-        ), modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp),
-        colors = CardDefaults.cardColors(Color.White)
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(10.dp)
-        ) {
-            Text(
-                text = "출석체크",
-                color = Color("#8CB369".toColorInt()),
-                fontWeight = FontWeight.Bold
-            )
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                for (i: Int in 1..7) {
-                    Column {
-                        Text("월")
-                        Text("1")
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun areaCheer(name: String) {
+fun areaCheer(name: String? = "나희수") {
     Text(
         "$name 님,\n플로깅해서 모은 포인트를 기부해보세요!", modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp)
     )
-}
-
-@Composable
-fun areaListOfDonations() {
-    for (i: Int in 1..8) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text("Picture")
-                Column(
-                    modifier = Modifier.width(50.dp)
-                ) {
-                    Text("기부처")
-                    Text("500P")
-                }
-
-                SmallButton("기부하기")
-            }
-        }
-    }
 }
 
 @Composable

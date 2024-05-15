@@ -35,7 +35,7 @@ import com.codehanzoom.greenwalk.view.SignUpScreen
 fun NavigationGraph() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "PloggingScreen") {
+    NavHost(navController = navController, startDestination = "LoginScreen") {
 
         composable("StartScreen") {
             StartScreen(navController = navController)
