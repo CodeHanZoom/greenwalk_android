@@ -1,9 +1,15 @@
 package com.codehanzoom.greenwalk.view
 
+import com.codehanzoom.greenwalk.compose.GetDistance
+import com.codehanzoom.greenwalk.compose.GetStep
+import com.codehanzoom.greenwalk.compose.GetTime
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,72 +19,93 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.codehanzoom.greenwalk.R
 import com.codehanzoom.greenwalk.compose.TopBar
+import com.codehanzoom.greenwalk.ui.theme.GW_Black100
 import com.codehanzoom.greenwalk.ui.theme.GW_Green100
 import com.codehanzoom.greenwalk.ui.theme.GW_Red100
-import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
+import com.codehanzoom.greenwalk.ui.theme.inter
 
+
+@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun PloggingScreen(navController: NavHostController) {
+
+
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TopBar(title = "플로깅", navController = navController)
+
         Column(
             modifier = Modifier
-                .height(300.dp)
+                .height(240.dp)
                 .background(GW_Green100)
-                .fillMaxWidth()
-                .padding(20.dp)
+                .fillMaxSize()
+                .padding(vertical = 10.dp, horizontal = 20.dp)
         ) {
-            Text(
-                text = "00 : 00",
-                color = Color.White,
-                fontSize = 40.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Text(text = "시간")
-            Text(
-                text = "0.00 km",
-                color = Color.White,
-                fontSize = 40.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Text(text = "킬로미터")
-            Text(
-                text = "0000 steps",
-                color = Color.White,
-                fontSize = 40.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Text(text = "걸음수")
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp)
+            ) {
+                // 시간 컴포즈
+                GetTime()
+                Text(
+                    text = "시간",
+                    fontFamily = inter,
+                    color = GW_Black100,
+                    fontSize = 12.sp
+                )
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp)
+            ) {
+                // 이동거리 컴포즈
+                GetDistance()
+                Text(
+                    text = "거리",
+                    fontFamily = inter,
+                    color = GW_Black100,
+                    fontSize = 12.sp)
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp)
+            ) {
+                // 걸음수 컴포즈
+                GetStep()
+                Text(
+                    text = "걸음수",
+                    fontFamily = inter,
+                    color = GW_Black100,
+                    fontSize = 12.sp)
+            }
         }
-        Box(
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.pic_test_map),
-                contentDescription = "pic_test_map",
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.FillWidth
-            )
+            // Naver Map api
+            MapScreen()
         }
     }
     StopButton(navController)
 }
-
 @Composable
 fun StopButton(navController: NavHostController) {
     // 화면정보 불러오기
@@ -97,7 +124,8 @@ fun StopButton(navController: NavHostController) {
             .height(70.dp)
             .offset(newX.toInt().dp, newY.toInt().dp),
         onClick = {
-                  navController.navigate("RecordScreen")
+            navController.navigate("RecordScreen") {
+            }
         },
         containerColor = GW_Red100
     ) {
@@ -108,14 +136,4 @@ fun StopButton(navController: NavHostController) {
     }
 }
 
-@Composable
-@Preview(
-    showSystemUi = true,
-    showBackground = true
-)
-fun PreviewPloggingScreen() {
-    GreenWalkTheme {
-        val navController = rememberNavController()
-        PloggingScreen(navController = navController)
-    }
-}
+
