@@ -19,7 +19,7 @@ import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
 @Composable
 fun DonationListArea() {
-    for (i: Int in 1..8) {
+    Column {
         Card (
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 6.dp
@@ -49,7 +49,39 @@ fun DonationListArea() {
                 }
             }
         }
+        for (i: Int in 1..8) {
+            Card (
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 6.dp
+                ), modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                colors = CardDefaults.cardColors(Color.White)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text("Picture")
+                        Column(
+                            modifier = Modifier.width(50.dp)
+                        ) {
+                            Text("기부처")
+                            Text("500P")
+                        }
+
+                        SmallButton("기부")
+                    }
+                }
+            }
+        }
     }
+
 }
 
 @Preview
