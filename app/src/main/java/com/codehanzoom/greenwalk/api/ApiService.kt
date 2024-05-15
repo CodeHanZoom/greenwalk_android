@@ -2,10 +2,14 @@ package com.codehanzoom.greenwalk.api
 
 import com.codehanzoom.greenwalk.model.LoginRequestBody
 import com.codehanzoom.greenwalk.model.LoginResponseBody
+import com.codehanzoom.greenwalk.model.PartnersResponseBody
+import com.codehanzoom.greenwalk.model.PointResponseBody
 import com.codehanzoom.greenwalk.model.SignUpRequestBody
 import com.codehanzoom.greenwalk.model.SignUpResponseBody
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
@@ -16,4 +20,10 @@ interface ApiService {
     @Headers("Content-Type: application/json")
     @POST("auth/login")
     suspend fun loginUser(@Body userInfo: LoginRequestBody): Response<LoginResponseBody>
+
+
+    @GET("partners")
+    fun getPartners(
+        @Header("Authorization") accessToken: String
+    ): Call<List<PartnersResponseBody>>
 }
