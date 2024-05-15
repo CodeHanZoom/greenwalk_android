@@ -9,14 +9,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.codehanzoom.greenwalk.R
 
-val inter = FontFamily(
-    Font(R.font.inter_black, FontWeight.Bold, FontStyle.Normal),
-    Font(R.font.inter_bold, FontWeight.Bold, FontStyle.Normal),
-    Font(R.font.inter_light, FontWeight.Bold, FontStyle.Normal),
-    Font(R.font.inter_medium, FontWeight.Bold, FontStyle.Normal),
-    Font(R.font.inter_regular, FontWeight.Bold, FontStyle.Normal),
-    Font(R.font.inter_thin, FontWeight.Bold, FontStyle.Normal)
-)
+val inter_black = FontFamily(Font(R.font.inter_black))
+val inter_light = FontFamily(Font(R.font.inter_light))
+val inter_bold = FontFamily(Font(R.font.inter_bold))
+val inter_medium = FontFamily(Font(R.font.inter_medium))
+val inter_regular = FontFamily(Font(R.font.inter_regular))
+val inter_thin = FontFamily(Font(R.font.inter_thin))
 
 val zenDots = FontFamily(
     Font(R.font.zen_dots_regular, FontWeight.Normal, FontStyle.Normal)
@@ -24,12 +22,12 @@ val zenDots = FontFamily(
 
 val GW_Typography = Typography(
     labelLarge = TextStyle( // Large Btn 스타일
-        fontFamily = inter,
+        fontFamily = inter_bold,
         fontWeight = FontWeight.Bold,
         fontSize = 26.sp,
     ),
     labelSmall = TextStyle( // Small Btn 스타일
-        fontFamily = inter,
+        fontFamily = inter_bold,
         fontWeight = FontWeight.Bold,
         fontSize = 14.sp,
     ),
@@ -39,7 +37,7 @@ val GW_Typography = Typography(
         fontSize = 34.sp,
     ),
     titleSmall = TextStyle(
-        fontFamily = inter,
+        fontFamily = inter_bold,
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp,
     )
