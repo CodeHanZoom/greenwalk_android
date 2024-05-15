@@ -27,6 +27,7 @@ import com.codehanzoom.greenwalk.view.MarketScreen
 import com.codehanzoom.greenwalk.view.MypageScreen
 import com.codehanzoom.greenwalk.view.NewsfeedScreen
 import com.codehanzoom.greenwalk.view.PloggingScreen
+import com.codehanzoom.greenwalk.view.PointScreen
 import com.codehanzoom.greenwalk.view.RecordScreen
 import com.codehanzoom.greenwalk.view.SignUpScreen
 
@@ -35,7 +36,7 @@ import com.codehanzoom.greenwalk.view.SignUpScreen
 fun NavigationGraph() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "PloggingScreen") {
+    NavHost(navController = navController, startDestination = "LoginSCreen") {
 
         composable("StartScreen") {
             StartScreen(navController = navController)
@@ -66,6 +67,9 @@ fun NavigationGraph() {
         }
         composable("CameraScreen") {
             CameraScreen(navController = navController)
+        }
+        composable("PointScreen") {
+            PointScreen(navController = navController)
         }
     }
 }
