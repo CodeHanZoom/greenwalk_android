@@ -140,4 +140,6 @@ dependencies {
     // 카메라 쪽에서 에러가 나서 구글링해보니 아래 의존성을 추가하라고 함 이유는 모르겠다
     implementation ("com.google.guava:guava:31.0.1-android")
 
+    implementation ("androidx.compose.runtime:runtime-livedata:1.0.5")
+
 }

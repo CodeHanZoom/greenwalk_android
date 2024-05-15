@@ -1,5 +1,6 @@
 package com.codehanzoom.greenwalk.compose
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.codehanzoom.greenwalk.ui.theme.GW_Green100
 import com.codehanzoom.greenwalk.ui.theme.GW_Typography
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
@@ -19,18 +21,18 @@ import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 fun SmallButton(title: String, modifier: Modifier? = null) {
     Button(
         shape = RoundedCornerShape(10.dp),
+        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xff8CB369)
+            containerColor = GW_Green100
         ),
         modifier = Modifier
-            .size(100.dp, 40.dp)
-            .padding(0.dp),
+            .size(80.dp, 40.dp),
         onClick = { /*TODO*/ }) {
         Text(
             text = title,
             style = GW_Typography.labelSmall,
             color = Color.White,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
     }
 }
@@ -39,6 +41,6 @@ fun SmallButton(title: String, modifier: Modifier? = null) {
 @Composable
 fun SmallButtonPreview() {
     GreenWalkTheme {
-        SmallButton("Aaㄱ1")
+        SmallButton("기부하기")
     }
 }
