@@ -43,24 +43,23 @@ import androidx.navigation.compose.rememberNavController
 import com.codehanzoom.greenwalk.R
 import com.codehanzoom.greenwalk.compose.TopBar
 import com.codehanzoom.greenwalk.ui.theme.GW_Black100
-import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
 import java.nio.ByteBuffer
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import androidx.compose.ui.tooling.preview.Preview as PreviewCompose
 import android.net.Uri
 import android.widget.Toast
+import androidx.annotation.OptIn
+import androidx.camera.core.ExperimentalGetImage
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.codehanzoom.greenwalk.MainActivity
+import com.codehanzoom.greenwalk.viewModel.PloggingViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -71,7 +70,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.FileNotFoundException
 import java.io.IOException
-import java.io.InputStream
 import java.util.concurrent.TimeUnit
 
 @Composable
@@ -167,14 +165,14 @@ fun CameraUI(
                 imageCapture,
                 context,
                 "http://aws-v5-beanstalk-env.eba-znduyhtv.ap-northeast-2.elasticbeanstalk.com/",
-                0,
-                0.0f
+                PloggingViewModel().getTotalStep(), // steps
+                PloggingViewModel().getTotalDistance() // distance
             )
 
             // 30초 delay
             delay(40000)
         }
-        navController.navigate("HomeScreen")
+        navController.navigate("PointScreen") // 포인트 확인 및 기부할 목록을 확인할 페이지로 이동
     }
 
     // 화면정보 불러오기
@@ -220,14 +218,14 @@ fun CameraUI(
                         imageCapture,
                         context,
                         "http://aws-v5-beanstalk-env.eba-znduyhtv.ap-northeast-2.elasticbeanstalk.com/",
-                        0,
-                        0.0f
+                        PloggingViewModel().getTotalStep(), // steps
+                        PloggingViewModel().getTotalDistance() // distance
                     )
 
                     // 30초 딜레이 후 화면 전환
                     delay(30000)
 
-                    navController.navigate("HomeScreen")
+                    navController.navigate("PointScreen") // 포인트 확인 및 기부할 목록을 확인할 페이지로 이동
                 }
                 coroutineScope.launch {
                     var remainTime = 30
@@ -260,7 +258,7 @@ private fun resizeBitmap(bitmap: Bitmap, targetWidth: Int, targetHeight: Int): B
     return Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, false)
 }
 
-private fun captureImageAndSendToServer(imageCapture: ImageCapture, context: Context, serverUrl: String, step: Int, walking: Float) {
+private fun captureImageAndSendToServer(imageCapture: ImageCapture, context: Context, serverUrl: String, step: Int, walking: Double) {
     // 저장명 설정
     // System.currentTimeMillis()로 실시간 정보를 추가하여 고유 이름부여
     val name = "CameraxImage_${System.currentTimeMillis()}.png"
@@ -342,7 +340,7 @@ private fun captureImageAndSendToServer(imageCapture: ImageCapture, context: Con
 //    }
 //}
 // timeout 적용
-private fun sendImageToServer(context: Context, imageUri: Uri, serverUrl: String, step: Int, walking: Float, accessToken: String) {
+private fun sendImageToServer(context: Context, imageUri: Uri, serverUrl: String, step: Int, walking: Double, accessToken: String) {
     val mediaTypeTextPlain = "text/plain".toMediaTypeOrNull()
 
     try {
@@ -460,6 +458,7 @@ private fun captureAndProcessImage(imageCapture: ImageCapture, context: Context)
 }
 
 // ImageProxy에서 이미지 데이터를 추출하여 byte 배열로 변환하는 확장 함수
+@OptIn(ExperimentalGetImage::class)
 private fun ImageProxy.toBytes(): ByteArray? {
     val image: Image = this.image ?: return null
     val buffer: ByteBuffer = image.planes[0].buffer

@@ -11,7 +11,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.codehanzoom.greenwalk.ui.theme.GW_Green100
-import com.codehanzoom.greenwalk.ui.theme.inter
+import com.codehanzoom.greenwalk.ui.theme.inter_bold
 
 @Composable
 fun Logo() {
@@ -21,7 +21,7 @@ fun Logo() {
     ) {
         Text(
             text = "GreenWalk",
-            fontFamily = inter,
+            fontFamily = inter_bold,
             fontSize = 40.sp,
             color = GW_Green100
         )

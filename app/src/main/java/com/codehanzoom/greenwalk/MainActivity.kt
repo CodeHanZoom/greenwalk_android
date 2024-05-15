@@ -1,12 +1,12 @@
 package com.codehanzoom.greenwalk
 
 import android.os.Build
+import com.codehanzoom.greenwalk.api.SharedPreferencesManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.codehanzoom.greenwalk.api.SharedPreferencesManager
 import com.codehanzoom.greenwalk.nav.NavigationGraph
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 import com.codehanzoom.greenwalk.utils.CameraPermissionHandler

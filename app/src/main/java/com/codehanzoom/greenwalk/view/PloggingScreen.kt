@@ -31,7 +31,7 @@ import com.codehanzoom.greenwalk.compose.TopBar
 import com.codehanzoom.greenwalk.ui.theme.GW_Black100
 import com.codehanzoom.greenwalk.ui.theme.GW_Green100
 import com.codehanzoom.greenwalk.ui.theme.GW_Red100
-import com.codehanzoom.greenwalk.ui.theme.inter
+import com.codehanzoom.greenwalk.ui.theme.inter_bold
 
 
 @RequiresApi(Build.VERSION_CODES.Q)
@@ -63,7 +63,7 @@ fun PloggingScreen(navController: NavHostController) {
                 GetTime()
                 Text(
                     text = "시간",
-                    fontFamily = inter,
+                    fontFamily = inter_bold,
                     color = GW_Black100,
                     fontSize = 12.sp
                 )
@@ -77,7 +77,7 @@ fun PloggingScreen(navController: NavHostController) {
                 GetDistance()
                 Text(
                     text = "거리",
-                    fontFamily = inter,
+                    fontFamily = inter_bold,
                     color = GW_Black100,
                     fontSize = 12.sp)
             }
@@ -90,7 +90,7 @@ fun PloggingScreen(navController: NavHostController) {
                 GetStep()
                 Text(
                     text = "걸음수",
-                    fontFamily = inter,
+                    fontFamily = inter_bold,
                     color = GW_Black100,
                     fontSize = 12.sp)
             }
