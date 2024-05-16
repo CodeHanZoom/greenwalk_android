@@ -50,23 +50,41 @@ import com.codehanzoom.greenwalk.model.UserInfoResponseBody
 import com.codehanzoom.greenwalk.nav.BottomNavigation
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 import com.codehanzoom.greenwalk.utils.RetrofitClient
+import com.codehanzoom.greenwalk.viewModel.UserInfoViewModel
 import retrofit2.Call
 import retrofit2.Response
 
 @Composable
 fun  HomeScreen(navController: NavHostController) {
+    val viewModel = UserInfoViewModel()
     // accessToken 저장
     var accessToken by remember { mutableStateOf(MainActivity.prefs.getString("accessToken", "")) }
     // userInfo 저장
     var userInfo by remember { mutableStateOf<UserInfoResponseBody?>(null) }
 
     LaunchedEffect(accessToken) {
+        Log.d("test", accessToken)
         if (accessToken.isNotEmpty()) {
             RetrofitClient.instance.getUserInfo("Bearer $accessToken").enqueue(object : retrofit2.Callback<UserInfoResponseBody> {
                 override fun onResponse(call: Call<UserInfoResponseBody>, response: Response<UserInfoResponseBody>) {
                     println(response.body()?.name)
                     if (response.isSuccessful) {
                         userInfo = response.body()
+                        userInfo?.let {
+                            userInfo ->
+                                viewModel.setName(userInfo.name)
+                        }
+                        Log.d("viewmodel test", viewModel.getName())
+//                        response.body()?.let { userInfo ->
+//                            viewModel.id = userInfo.id
+//                            viewModel.name = userInfo.name ?: "null"
+//                            viewModel.email = userInfo.email ?: ""
+//                            viewModel.totalPoint = userInfo.totalPoint ?: 0
+//                            viewModel.totalDonation = userInfo.totalDonation ?: 0
+//                            viewModel.totalStep = userInfo.totalStep ?: 0
+//                            viewModel.totalTrashCount = userInfo.totalTrashCount ?: 0
+//                            viewModel.totalWalkingDistance = userInfo.totalWalkingDistance ?: 0
+//                        }
                         Log.d("HomeScreen", accessToken.toString())
                         Log.d("HomeScreen", "User Name: ${userInfo?.name}")
                         Log.d("HomeScreen", "Email: ${userInfo?.email}")

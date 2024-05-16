@@ -1,7 +1,6 @@
 package com.codehanzoom.greenwalk.view
 
 import PartnersViewModel
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,41 +16,35 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.codehanzoom.greenwalk.MainActivity
 import com.codehanzoom.greenwalk.R
 import com.codehanzoom.greenwalk.compose.LargeButton
 import com.codehanzoom.greenwalk.compose.SmallButton
 import com.codehanzoom.greenwalk.compose.TopBar
-import com.codehanzoom.greenwalk.model.PartnersResponseBody
-import com.codehanzoom.greenwalk.model.UserInfoResponseBody
 import com.codehanzoom.greenwalk.ui.theme.GW_Black100
 import com.codehanzoom.greenwalk.ui.theme.GW_Green100
 import com.codehanzoom.greenwalk.ui.theme.GW_Green200
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 import com.codehanzoom.greenwalk.ui.theme.inter_bold
 import com.codehanzoom.greenwalk.ui.theme.inter_regular
-import com.codehanzoom.greenwalk.utils.RetrofitClient
-import retrofit2.Call
-import retrofit2.Response
+import com.codehanzoom.greenwalk.viewModel.UserInfoViewModel
 
 @Composable
 fun PointScreen(navController: NavHostController) {
+    val viewModel = UserInfoViewModel()
+
     val TAG = "PointScreen"
 
     val pointState = remember { mutableStateOf(0) }
@@ -69,7 +62,7 @@ fun PointScreen(navController: NavHostController) {
             modifier = Modifier.padding(horizontal = 30.dp)
         ) {
             Text(
-                text = "나희수" + "님,",
+                text = "${viewModel.getName()} 님,",
                 fontFamily = inter_bold,
                 color = GW_Black100,
                 fontSize = 20.sp
@@ -163,13 +156,13 @@ fun PartnerScreen(viewModel: PartnersViewModel) {
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Row{
+                        Row {
                             Image(
                                 painter = painterResource(id = R.drawable.ic_profile_fill),
                                 contentDescription = "기부처 아이콘",
                                 modifier = Modifier.padding(end = 10.dp)
                             )
-                            Column{
+                            Column {
                                 Text(
                                     text = partner.name,
                                     fontFamily = inter_bold,
