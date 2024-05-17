@@ -59,7 +59,7 @@ fun DonationListArea() {
                         Text("500P")
                     }
 
-                    SmallButton("기부")
+//                    SmallButton("기부")
                 }
             }
         }
@@ -96,7 +96,7 @@ fun DonationListArea() {
                         Text("500P")
                     }
 
-                    SmallButton("기부")
+//                    SmallButton("기부")
                 }
             }
         }
@@ -133,7 +133,7 @@ fun DonationListArea() {
                         Text("500P")
                     }
 
-                    SmallButton("기부")
+//                    SmallButton("기부")
                 }
             }
         }
@@ -170,7 +170,7 @@ fun DonationListArea() {
                         Text("500P")
                     }
 
-                    SmallButton("기부")
+//                    SmallButton("기부")
                 }
             }
         }
