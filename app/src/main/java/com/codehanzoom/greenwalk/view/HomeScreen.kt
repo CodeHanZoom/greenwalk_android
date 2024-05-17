@@ -50,6 +50,7 @@ import com.codehanzoom.greenwalk.model.UserInfoResponseBody
 import com.codehanzoom.greenwalk.nav.BottomNavigation
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 import com.codehanzoom.greenwalk.utils.RetrofitClient
+import com.codehanzoom.greenwalk.utils.getGrade
 import com.codehanzoom.greenwalk.viewModel.UserInfoViewModel
 import retrofit2.Call
 import retrofit2.Response
@@ -72,19 +73,16 @@ fun  HomeScreen(navController: NavHostController) {
                         userInfo = response.body()
                         userInfo?.let {
                             userInfo ->
+                                viewModel.setId(userInfo.id)
                                 viewModel.setName(userInfo.name)
+                                viewModel.setEmail(userInfo.email)
+                                viewModel.setTotalPoint(userInfo.totalPoint)
+                                viewModel.setTotalDonation(userInfo.totalDonation)
+                                viewModel.setTotalStep(userInfo.totalStep)
+                                viewModel.setTotalTrashCount(userInfo.totalTrashCount)
+                                viewModel.setTotalWalkingDistance(userInfo.totalWalkingDistance)
                         }
                         Log.d("viewmodel test", viewModel.getName())
-//                        response.body()?.let { userInfo ->
-//                            viewModel.id = userInfo.id
-//                            viewModel.name = userInfo.name ?: "null"
-//                            viewModel.email = userInfo.email ?: ""
-//                            viewModel.totalPoint = userInfo.totalPoint ?: 0
-//                            viewModel.totalDonation = userInfo.totalDonation ?: 0
-//                            viewModel.totalStep = userInfo.totalStep ?: 0
-//                            viewModel.totalTrashCount = userInfo.totalTrashCount ?: 0
-//                            viewModel.totalWalkingDistance = userInfo.totalWalkingDistance ?: 0
-//                        }
                         Log.d("HomeScreen", accessToken.toString())
                         Log.d("HomeScreen", "User Name: ${userInfo?.name}")
                         Log.d("HomeScreen", "Email: ${userInfo?.email}")
@@ -121,11 +119,11 @@ fun  HomeScreen(navController: NavHostController) {
                     .padding(10.dp)
                     .verticalScroll(rememberScrollState())
             ) {
-                areaMyInfo(name = userInfo?.name,
-                    ploggingCount = userInfo?.totalStep,
-                    totalPoint = userInfo?.totalPoint,
-                    totalWalkingDistance = userInfo?.totalWalkingDistance,
-                    grade = "GOLD")
+                areaMyInfo(name = viewModel.getName(),
+                    ploggingCount = viewModel.getTotalTrashCount(),
+                    totalPoint = viewModel.getTotalPoint(),
+                    totalWalkingDistance = viewModel.getTotalWalkingDistance(),
+                    grade = getGrade(viewModel.getTotalPoint()))
 
                 AttendanceArea()
 

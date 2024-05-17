@@ -5,10 +5,14 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.Image
+import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
+import androidx.annotation.OptIn
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.ImageProxy
@@ -29,6 +33,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -40,37 +45,32 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.codehanzoom.greenwalk.MainActivity
 import com.codehanzoom.greenwalk.R
 import com.codehanzoom.greenwalk.compose.TopBar
 import com.codehanzoom.greenwalk.ui.theme.GW_Black100
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.ResponseBody
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.io.ByteArrayOutputStream
-import java.nio.ByteBuffer
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
-import androidx.compose.ui.tooling.preview.Preview as PreviewCompose
-import android.net.Uri
-import android.widget.Toast
-import androidx.annotation.OptIn
-import androidx.camera.core.ExperimentalGetImage
-import androidx.compose.runtime.rememberCoroutineScope
-import com.codehanzoom.greenwalk.MainActivity
 import com.codehanzoom.greenwalk.viewModel.PloggingViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.io.ByteArrayOutputStream
 import java.io.FileNotFoundException
 import java.io.IOException
+import java.nio.ByteBuffer
 import java.util.concurrent.TimeUnit
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
+import androidx.compose.ui.tooling.preview.Preview as PreviewCompose
 
 @Composable
 fun CameraPreviewScreen(navController: NavHostController) {
@@ -222,14 +222,14 @@ fun CameraUI(
                         PloggingViewModel().getTotalDistance() // distance
                     )
 
-                    // 30초 딜레이 후 화면 전환
-                    delay(30000)
+                    // 20초 딜레이 후 화면 전환
+                    delay(20000)
 
                     navController.navigate("PointScreen") // 포인트 확인 및 기부할 목록을 확인할 페이지로 이동
                 }
                 coroutineScope.launch {
-                    var remainTime = 30
-                    for (i in 1..6) {
+                    var remainTime = 20
+                    for (i in 1..4) {
                         remainTime -= 5
                         delay(5000)
                         Toast.makeText(context, "$remainTime 초 남았습니다!", Toast.LENGTH_SHORT)
@@ -293,52 +293,7 @@ private fun captureImageAndSendToServer(imageCapture: ImageCapture, context: Con
         }
     )
 }
-// timeout 미적용
-//private fun sendImageToServer(context: Context, imageUri: Uri, serverUrl: String, step: Int, walking: Float, accessToken: String) {
-//    val mediaTypeTextPlain = "text/plain".toMediaTypeOrNull()
-//
-//    try {
-//        context.contentResolver.openInputStream(imageUri).use { inputStream ->
-//            val bitmap = BitmapFactory.decodeStream(inputStream)
-//            val resizedBitmap = resizeBitmap(bitmap, 640, 640)
-//            val outputStream = ByteArrayOutputStream()
-//            resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-//            val imageBytes = outputStream.toByteArray()
-//
-//            val retrofit = Retrofit.Builder()
-//                .baseUrl(serverUrl)
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build()
-//
-//            val service = retrofit.create(UploadService::class.java)
-//            val mediaTypePng = "image/png".toMediaTypeOrNull()
-//            val requestFile = RequestBody.create(mediaTypePng, imageBytes)
-//            val imagePart = MultipartBody.Part.createFormData("image", "image.png", requestFile)
-//            val stepBody = RequestBody.create(mediaTypeTextPlain, step.toString())
-//            val walkingBody = RequestBody.create(mediaTypeTextPlain, walking.toString())
-//
-//            val call = service.uploadImage(imagePart, stepBody, walkingBody, "Bearer $accessToken")
-//            call.enqueue(object : Callback<ResponseBody> {
-//                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-//                    if (response.isSuccessful) {
-//                        println("response "+response.message().toString()+" "+response.body()?.string())
-//                        println("Image uploaded successfully!")
-//                    } else {
-//                        println("Failed to upload image: ${response.code()}")
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-//                    println("Network error: ${t.message}")
-//                }
-//            })
-//        }
-//    } catch (e: FileNotFoundException) {
-//        Log.e("CameraXApp", "File not found: $e")
-//    } catch (e: IOException) {
-//        Log.e("CameraXApp", "Error accessing file: $e")
-//    }
-//}
+
 // timeout 적용
 private fun sendImageToServer(context: Context, imageUri: Uri, serverUrl: String, step: Int, walking: Double, accessToken: String) {
     val mediaTypeTextPlain = "text/plain".toMediaTypeOrNull()
