@@ -18,7 +18,7 @@ import com.codehanzoom.greenwalk.ui.theme.GW_Typography
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
 @Composable
-fun SmallButton(title: String, modifier: Modifier? = null) {
+fun SmallButton(title: String, onClick: () -> Unit) {
     Button(
         shape = RoundedCornerShape(10.dp),
         contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp),
@@ -27,7 +27,7 @@ fun SmallButton(title: String, modifier: Modifier? = null) {
         ),
         modifier = Modifier
             .size(80.dp, 40.dp),
-        onClick = { /*TODO*/ }) {
+        onClick = onClick) {
         Text(
             text = title,
             style = GW_Typography.labelSmall,
@@ -41,6 +41,6 @@ fun SmallButton(title: String, modifier: Modifier? = null) {
 @Composable
 fun SmallButtonPreview() {
     GreenWalkTheme {
-        SmallButton("기부하기")
+//        SmallButton("기부하기", )
     }
 }

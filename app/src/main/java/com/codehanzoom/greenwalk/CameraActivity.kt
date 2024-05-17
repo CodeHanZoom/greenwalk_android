@@ -30,7 +30,7 @@ fun CameraActivity(navController: NavHostController) {
         TopBar(title = "사진촬영", navController = navController)
         Spacer(modifier = Modifier.height(40.dp))
         cameraScreen()
-        SmallButton(title = "촬영하기")
+//        SmallButton(title = "촬영하기")
     }
 }
 

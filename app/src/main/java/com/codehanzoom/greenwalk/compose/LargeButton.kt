@@ -15,7 +15,7 @@ import com.codehanzoom.greenwalk.ui.theme.GW_Typography
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 
 @Composable
-fun LargeButton(title: String, modifier: Modifier? = null, onClick: () -> Unit) {
+fun LargeButton(title: String, modifier: Unit? = null, onClick: () -> Unit) {
     Button(
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(
