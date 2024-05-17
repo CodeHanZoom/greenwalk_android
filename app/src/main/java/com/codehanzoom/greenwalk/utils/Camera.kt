@@ -50,6 +50,7 @@ import com.codehanzoom.greenwalk.R
 import com.codehanzoom.greenwalk.compose.TopBar
 import com.codehanzoom.greenwalk.model.PloggingResponseBody
 import com.codehanzoom.greenwalk.ui.theme.GW_Black100
+import com.codehanzoom.greenwalk.viewModel.PloggingInfoViewModel
 import com.codehanzoom.greenwalk.viewModel.PloggingViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -297,6 +298,7 @@ private fun captureImageAndSendToServer(imageCapture: ImageCapture, context: Con
 // timeout 적용
 private fun sendImageToServer(context: Context, imageUri: Uri, serverUrl: String, step: Int, walking: Double, accessToken: String) {
     val mediaTypeTextPlain = "text/plain".toMediaTypeOrNull()
+    val viewModel = PloggingInfoViewModel()
 
     try {
         context.contentResolver.openInputStream(imageUri).use { inputStream ->
@@ -328,8 +330,15 @@ private fun sendImageToServer(context: Context, imageUri: Uri, serverUrl: String
             call.enqueue(object : Callback<PloggingResponseBody> {
                 override fun onResponse(call: Call<PloggingResponseBody>, response: Response<PloggingResponseBody>) {
                     if (response.isSuccessful) {
-                        val body = response.body()
-                        println("response: ${response.message()}, body: ${body?.point.toString()}")
+                        val ploggingInfo = response.body()
+                        ploggingInfo?.let {
+                            body ->
+                            viewModel.setImageUrl(ploggingInfo.imageUrl?:"err")
+                            viewModel.setPoint(ploggingInfo.point?:-1)
+                            viewModel.setTrashCount(ploggingInfo.trashCount?:-1)
+                        }
+
+                        println("response: ${response.message()}, trashCount: ${viewModel.getTrashCount()}")
                         println("Image uploaded successfully!")
                     } else {
                         println("Failed to upload image: ${response.code()}, error: ${response.errorBody()?.string()}")
