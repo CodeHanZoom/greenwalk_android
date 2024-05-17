@@ -16,7 +16,6 @@ object RetrofitClient {
 
         retrofit.create(UserService::class.java)
     }
-
     // 사진, 포인트 api
     val getPartnersApi: ApiService by lazy {
         val retrofit = Retrofit.Builder()
@@ -26,6 +25,4 @@ object RetrofitClient {
 
         retrofit.create(ApiService::class.java)
     }
-
-
 }

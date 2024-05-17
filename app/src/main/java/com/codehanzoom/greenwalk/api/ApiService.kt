@@ -1,5 +1,6 @@
 package com.codehanzoom.greenwalk.api
 
+import com.codehanzoom.greenwalk.model.DonationsRequestBody
 import com.codehanzoom.greenwalk.model.LoginRequestBody
 import com.codehanzoom.greenwalk.model.LoginResponseBody
 import com.codehanzoom.greenwalk.model.PartnersResponseBody
@@ -21,9 +22,4 @@ interface ApiService {
     @POST("auth/login")
     suspend fun loginUser(@Body userInfo: LoginRequestBody): Response<LoginResponseBody>
 
-
-    @GET("partners")
-    fun getPartners(
-        @Header("Authorization") accessToken: String
-    ): Call<List<PartnersResponseBody>>
 }
