@@ -48,6 +48,7 @@ import androidx.navigation.compose.rememberNavController
 import com.codehanzoom.greenwalk.MainActivity
 import com.codehanzoom.greenwalk.R
 import com.codehanzoom.greenwalk.compose.TopBar
+import com.codehanzoom.greenwalk.model.PloggingResponseBody
 import com.codehanzoom.greenwalk.ui.theme.GW_Black100
 import com.codehanzoom.greenwalk.viewModel.PloggingViewModel
 import kotlinx.coroutines.delay
@@ -57,7 +58,6 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -307,8 +307,8 @@ private fun sendImageToServer(context: Context, imageUri: Uri, serverUrl: String
             val imageBytes = outputStream.toByteArray()
 
             val okHttpClient = OkHttpClient.Builder()
-                .readTimeout(30, TimeUnit.SECONDS)  // 읽기 타임아웃을 30초로 설정
-                .connectTimeout(30, TimeUnit.SECONDS)  // 연결 타임아웃을 30초로 설정
+                .readTimeout(20, TimeUnit.SECONDS)  // 읽기 타임아웃을 30초로 설정
+                .connectTimeout(20, TimeUnit.SECONDS)  // 연결 타임아웃을 30초로 설정
                 .build()
 
             val retrofit = Retrofit.Builder()
@@ -325,17 +325,18 @@ private fun sendImageToServer(context: Context, imageUri: Uri, serverUrl: String
             val walkingBody = RequestBody.create(mediaTypeTextPlain, walking.toString())
 
             val call = service.uploadImage(imagePart, stepBody, walkingBody, "Bearer $accessToken")
-            call.enqueue(object : Callback<ResponseBody> {
-                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+            call.enqueue(object : Callback<PloggingResponseBody> {
+                override fun onResponse(call: Call<PloggingResponseBody>, response: Response<PloggingResponseBody>) {
                     if (response.isSuccessful) {
-                        println("response: ${response.message()}, body: ${response.body()?.string()}")
+                        val body = response.body()
+                        println("response: ${response.message()}, body: ${body?.point.toString()}")
                         println("Image uploaded successfully!")
                     } else {
                         println("Failed to upload image: ${response.code()}, error: ${response.errorBody()?.string()}")
                     }
                 }
 
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                override fun onFailure(call: Call<PloggingResponseBody>, t: Throwable) {
                     println("Network error: ${t.message}")
                 }
             })

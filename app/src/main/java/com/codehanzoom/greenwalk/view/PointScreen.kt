@@ -136,6 +136,7 @@ fun PointScreen(navController: NavHostController) {
             .padding(top = 700.dp)
     ) {
         LargeButton(title = "메인으로") {
+            navController.navigate("HomeScreen")
         }
     }
 }

@@ -1,8 +1,8 @@
 package com.codehanzoom.greenwalk.utils
 
+import com.codehanzoom.greenwalk.model.PloggingResponseBody
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Header
 import retrofit2.http.Multipart
@@ -19,5 +19,5 @@ interface UploadService {
         @Part("step") step: RequestBody,
         @Part("walkingDistance") walking: RequestBody,
         @Header("Authorization") accessToken: String
-    ): Call<ResponseBody>
+    ): Call<PloggingResponseBody>
 }
