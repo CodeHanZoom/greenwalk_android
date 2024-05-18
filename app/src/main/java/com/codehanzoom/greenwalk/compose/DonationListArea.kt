@@ -58,8 +58,10 @@ fun DonationListArea() {
                             fontWeight = FontWeight.Bold)
                         Text("500P")
                     }
-
-//                    SmallButton("기부")
+// 추후 Lazy Column으로 변경예정
+//                    SmallButton("기부") {
+//
+//                    }
                 }
             }
         }
