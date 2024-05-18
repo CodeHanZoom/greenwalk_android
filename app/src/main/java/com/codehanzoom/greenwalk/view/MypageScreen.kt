@@ -1,5 +1,6 @@
 package com.codehanzoom.greenwalk.view
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,15 +29,43 @@ import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.codehanzoom.greenwalk.MainActivity
 import com.codehanzoom.greenwalk.R
+import com.codehanzoom.greenwalk.model.DonationRecord
 import com.codehanzoom.greenwalk.nav.BottomNavigation
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
+import com.codehanzoom.greenwalk.utils.RetrofitClient
 import com.codehanzoom.greenwalk.utils.getGrade
+import com.codehanzoom.greenwalk.viewModel.MyPageViewModel
 import com.codehanzoom.greenwalk.viewModel.UserInfoViewModel
+import retrofit2.Call
+import retrofit2.Response
 
 @Composable
 fun MypageScreen(navController: NavHostController) {
     val viewModel = UserInfoViewModel()
+//    var donationList: MutableList<DonationRecord> = mutableListOf()
+    val donationViewModel = MyPageViewModel()
+    val accessToken = MainActivity.prefs.getString("accessToken", "")
+
+    RetrofitClient.instance.getDonationList("Bearer $accessToken").enqueue(object : retrofit2.Callback<MutableList<DonationRecord>> {
+        override fun onResponse(call: Call<MutableList<DonationRecord>>, response: Response<MutableList<DonationRecord>>) {
+            println(response.body())
+            if (response.isSuccessful) {
+                donationViewModel.setDonationList(response.body() ?: mutableListOf())
+                Log.d("viewmodel test", viewModel.getName())
+                Log.d("MyPageScreen", accessToken.toString())
+
+            } else {
+                Log.e("HomeScreen", "Response Error : ${response.errorBody()?.string()}")
+            }
+        }
+
+        override fun onFailure(call: Call<MutableList<DonationRecord>>, t: Throwable) {
+            Log.e("HomeScreen", "Network Error : ${t.message}")
+        }
+    })
+
     Scaffold(
         topBar = {
             areaHeader()
@@ -172,7 +201,35 @@ fun MypageScreen(navController: NavHostController) {
                             fontSize = 20.sp
                         )
                         Spacer(Modifier.height(15.dp))
+                        Row (modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(5.dp)) {
+                            Text(text = "ID",
+                                modifier = Modifier.weight(2f))
+                            Text(text = "기부처",
+                                modifier = Modifier.weight(3f))
+                            Text(text = "기부포인트",
+                                modifier = Modifier.weight(3f))
+                        }
+                        for (donation in donationViewModel.getDonationList()) {
+                            Row (
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(5.dp)
+                            ){
+                                Text(text = donation.id.toString(),
+                                    fontSize = 16.sp,
+                                    modifier = Modifier.weight(2f))
 
+                                Text(text = donation.partnerName,
+                                    fontSize = 16.sp,
+                                    modifier = Modifier.weight(3f))
+
+                                Text(text = donation.donationAmount.toString(),
+                                    fontSize = 16.sp,
+                                    modifier = Modifier.weight(3f))
+                            }
+                        }
                     }
                 }
             }
