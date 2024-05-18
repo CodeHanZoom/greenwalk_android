@@ -2,30 +2,8 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="LoginActivityPreview">
-        <State />
-      </entry>
-      <entry key="MapActivity">
-        <State />
-      </entry>
-      <entry key="SplashScreen">
-        <State />
-      </entry>
       <entry key="app">
-        <State>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="$USER_HOME$/.android/avd/Galaxy_S24_API_34.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-05-15T12:07:36.705770Z" />
-        </State>
+        <State />
       </entry>
     </value>
   </component>

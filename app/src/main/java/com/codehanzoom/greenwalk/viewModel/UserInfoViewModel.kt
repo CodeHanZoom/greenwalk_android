@@ -11,7 +11,7 @@ class UserInfoViewModel : ViewModel() {
         var totalDonation = 0
         var totalStep = 0
         var totalTrashCount = 0
-        var totalWalkingDistance = 0
+        var totalWalkingDistance: Double = 0.0
     }
 
     // id getter / setter
@@ -78,11 +78,11 @@ class UserInfoViewModel : ViewModel() {
     }
 
     // totalWalkingDistance getter / setter
-    fun getTotalWalkingDistance(): Int {
+    fun getTotalWalkingDistance(): Double {
         return totalWalkingDistance
     }
 
-    fun setTotalWalkingDistance(_totalWalkingDistance: Int) {
+    fun setTotalWalkingDistance(_totalWalkingDistance: Double) {
         totalWalkingDistance = _totalWalkingDistance
     }
 

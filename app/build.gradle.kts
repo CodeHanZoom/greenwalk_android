@@ -1,8 +1,3 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import java.io.FileInputStream
-import java.util.Properties
-
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -142,4 +137,7 @@ dependencies {
 
     implementation ("androidx.compose.runtime:runtime-livedata:1.0.5")
 
+    // image process library
+    implementation ("io.coil-kt:coil:2.1.0")
+    implementation ("io.coil-kt:coil-compose:2.1.0")
 }
