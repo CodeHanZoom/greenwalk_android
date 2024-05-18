@@ -97,55 +97,6 @@ fun CameraPreviewScreen(navController: NavHostController) {
     CameraUI(previewView, navController, imageCapture, context)
 }
 
-//@Composable
-//fun CameraUI(previewView: PreviewView, navController: NavHostController,
-//             imageCapture: ImageCapture, context: Context) {
-//    // 화면정보 불러오기
-//    val configuration = LocalConfiguration.current
-//    val screenWidth = configuration.screenWidthDp.dp
-//
-//    TopBar(title = "사진촬영", navController = navController)
-//    Column (horizontalAlignment = Alignment.CenterHorizontally,
-//        verticalArrangement = Arrangement.Center,
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .background(GW_Black100)
-//
-//    ) {
-//        Spacer(modifier = Modifier.height(100.dp))
-//        Box (
-//            modifier = Modifier.width(screenWidth)
-//
-//        ){
-//            AndroidView({ previewView },
-//                modifier = Modifier
-//                    .height(300.dp)
-//                    .fillMaxWidth()
-//            )
-//        }
-//
-//        Spacer(modifier = Modifier.height(150.dp))
-//        Image(
-//            painter = painterResource(id = R.drawable.ic_camera),
-//            contentDescription = null,
-//            Modifier.clickable {
-////                captureAndProcessImage(imageCapture, context)
-////                captureImage(imageCapture, context)
-//
-////                navController.navigate("HomeScreen")
-//
-//                // 클릭 이벤트 핸들러
-//                LaunchedEffect(Unit) {
-//                    captureImageAndSendToServer(imageCapture, context, "http://aws-v5-beanstalk-env.eba-znduyhtv.ap-northeast-2.elasticbeanstalk.com/", 0, 0.0f)
-//                    navController.navigate("HomeScreen")
-//                }
-//
-//
-//            }
-//        )
-//    }
-//}
-
 @Composable
 fun CameraUI(
     previewView: PreviewView,
@@ -158,7 +109,6 @@ fun CameraUI(
         val text = "사진처리중 입니다!"
         val duration = 30
         // Navigation 처리
-
         runBlocking {
             Toast.makeText(context, text, Toast.LENGTH_LONG).show()
 
@@ -240,20 +190,7 @@ fun CameraUI(
             }
         )
     }
-
-//    // 클릭 핸들러 내에서 비동기 작업 수행 (Navigation 이후에 실행되도록)
-//    LaunchedEffect(navController.currentBackStackEntryAsState().value) {
-//        captureImageAndSendToServer(
-//            imageCapture,
-//            context,
-//            "http://aws-v5-beanstalk-env.eba-znduyhtv.ap-northeast-2.elasticbeanstalk.com/",
-//            0,
-//            0.0f
-//        )
-//    }
 }
-
-
 
 private fun resizeBitmap(bitmap: Bitmap, targetWidth: Int, targetHeight: Int): Bitmap {
     return Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, false)
@@ -357,71 +294,6 @@ private fun sendImageToServer(context: Context, imageUri: Uri, serverUrl: String
     }
 }
 
-
-
-
-
-
-private fun captureImage(imageCapture: ImageCapture, context: Context) {
-    val name = "CameraxImage.png" // 확장자를 png로 변경
-    val contentValues = ContentValues().apply {
-        put(MediaStore.MediaColumns.DISPLAY_NAME, name)
-        put(MediaStore.MediaColumns.MIME_TYPE, "image/png") // MIME 유형을 image/png로 변경
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-            put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/CameraX-Image")
-        }
-    }
-    val outputOptions = ImageCapture.OutputFileOptions
-        .Builder(
-            context.contentResolver,
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-            contentValues
-        )
-        .build()
-    imageCapture.takePicture(
-        outputOptions,
-        ContextCompat.getMainExecutor(context),
-        object : ImageCapture.OnImageSavedCallback {
-            override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                println("Success")
-            }
-
-            override fun onError(exception: ImageCaptureException) {
-                println("Failed $exception")
-            }
-
-        })
-}
-
-
-private fun captureAndProcessImage(imageCapture: ImageCapture, context: Context) {
-    // ImageCapture에서 이미지를 캡처
-    imageCapture.takePicture(ContextCompat.getMainExecutor(context),
-        object : ImageCapture.OnImageCapturedCallback() {
-            override fun onCaptureSuccess(imageProxy: ImageProxy) {
-                super.onCaptureSuccess(imageProxy)
-                // ImageProxy에서 이미지 데이터를 추출하여 byte 배열로 변환
-                val imageData = imageProxy.toBytes()
-                Log.d("captured width", imageProxy.width.toString())
-                Log.d("captured height", imageProxy.height.toString())
-                // 이미지 데이터가 null이 아니면 다른 용도로 사용 가능
-                if (imageData != null) {
-                    // 여기에 원하는 작업 수행
-                    processImageData(imageData)
-                    Log.d("captured data", imageData.size.toString())
-                }
-
-                // 이미지 처리가 완료되었으므로 ImageProxy를 닫음
-                imageProxy.close()
-            }
-
-            override fun onError(exception: ImageCaptureException) {
-                super.onError(exception)
-                println("Failed $exception")
-            }
-        })
-}
-
 // ImageProxy에서 이미지 데이터를 추출하여 byte 배열로 변환하는 확장 함수
 @OptIn(ExperimentalGetImage::class)
 private fun ImageProxy.toBytes(): ByteArray? {
@@ -431,12 +303,6 @@ private fun ImageProxy.toBytes(): ByteArray? {
     buffer.get(bytes)
     return bytes
 }
-
-// 이미지 데이터를 처리하는 함수 (원하는 작업 수행)
-private fun processImageData(imageData: ByteArray) {
-    // 원하는 작업을 여기에 구현
-}
-
 
 private suspend fun Context.getCameraProvider(): ProcessCameraProvider =
     suspendCoroutine { continuation ->
