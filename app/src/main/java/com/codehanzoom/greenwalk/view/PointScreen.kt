@@ -30,13 +30,18 @@ import com.codehanzoom.greenwalk.ui.theme.GW_Green200
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 import com.codehanzoom.greenwalk.ui.theme.inter_bold
 import com.codehanzoom.greenwalk.ui.theme.inter_regular
-import com.codehanzoom.greenwalk.viewModel.DonationViewModel
+import com.codehanzoom.greenwalk.viewModel.PloggingInfoViewModel
+import com.codehanzoom.greenwalk.viewModel.UserInfoViewModel
 
 @Composable
 fun PointScreen(navController: NavHostController) {
+    val viewModel = UserInfoViewModel()
+
+    val TAG = "PointScreen"
 
     val pointState = remember { mutableStateOf(0) }
     val trashCountState = remember { mutableStateOf(0) }
+    val ploggingViewModel = PloggingInfoViewModel()
 
     // UI
     Column(
@@ -50,7 +55,7 @@ fun PointScreen(navController: NavHostController) {
             modifier = Modifier.padding(horizontal = 30.dp)
         ) {
             Text(
-                text = "나희수" + "님,",
+                text = "${viewModel.getName()} 님,",
                 fontFamily = inter_bold,
                 color = GW_Black100,
                 fontSize = 20.sp
@@ -83,7 +88,7 @@ fun PointScreen(navController: NavHostController) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "${trashCountState.value}" + "개",
+                    text = "${ploggingViewModel.getTrashCount()}" + "개",
                     fontFamily = inter_bold,
                     color = GW_Green100,
                     fontSize = 24.sp
@@ -101,7 +106,7 @@ fun PointScreen(navController: NavHostController) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "${pointState.value}" + "포인트",
+                    text = "${ploggingViewModel.getPoint()}" + "포인트",
                     fontFamily = inter_bold,
                     color = GW_Green100,
                     fontSize = 24.sp
