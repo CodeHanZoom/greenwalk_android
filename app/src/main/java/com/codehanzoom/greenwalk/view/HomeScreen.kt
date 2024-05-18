@@ -163,7 +163,7 @@ fun areaHeader() {
 fun areaMyInfo(name: String?="나희수",
                ploggingCount: Int?=-1,
                totalPoint: Int?=-1,
-               totalWalkingDistance: Int?=-1,
+               totalWalkingDistance: Double?=-1.0,
                grade: String?="Bronze") {
     Card(
         elevation = CardDefaults.cardElevation(

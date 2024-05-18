@@ -1,5 +1,6 @@
 package com.codehanzoom.greenwalk
 
+import CameraPreviewScreen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,7 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
-import com.codehanzoom.greenwalk.utils.CameraPreviewScreen
+
 
 
 @Composable
