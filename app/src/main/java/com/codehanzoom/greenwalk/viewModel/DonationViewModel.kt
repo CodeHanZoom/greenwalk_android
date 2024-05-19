@@ -1,6 +1,10 @@
 package com.codehanzoom.greenwalk.viewModel
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.codehanzoom.greenwalk.MainActivity
@@ -11,8 +15,7 @@ import kotlinx.coroutines.launch
 
 class DonationViewModel : ViewModel() {
     val TAG = "DonationViewModel"
-
-    fun fetchDonate(partnerId: Int, donationMoney: Int) {
+    fun fetchDonate(context: Context, partnerId: Int, donationMoney: Int) {
         val accessToken = MainActivity.prefs.getString("accessToken", "")
 
         viewModelScope.launch {
@@ -23,6 +26,7 @@ class DonationViewModel : ViewModel() {
                     when(response.code()) {
                         200 -> {
                             Log.d(TAG, "donate: 기부성공")
+                            Toast.makeText(context,"기부가 완료되었습니다.",Toast.LENGTH_SHORT).show()
                         }
                     }
                 }else {
