@@ -4,6 +4,7 @@ import StartScreen
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -20,6 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.codehanzoom.greenwalk.CameraScreen
+import com.codehanzoom.greenwalk.ui.theme.GW_Green100
 import com.codehanzoom.greenwalk.ui.theme.GW_Green200
 import com.codehanzoom.greenwalk.view.HomeScreen
 import com.codehanzoom.greenwalk.view.LoginScreen
@@ -86,7 +88,7 @@ fun BottomNavigation(navController:NavHostController) {
 
     androidx.compose.material.BottomNavigation(
         backgroundColor = Color.White,
-        contentColor = Color(0xFF3F414E)
+//        contentColor = GW_Green100
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
@@ -97,12 +99,10 @@ fun BottomNavigation(navController:NavHostController) {
                     Icon(
                         painter = painterResource(id = item.icon),
                         contentDescription = stringResource(id = item.title),
-                        modifier = Modifier
-                            .width(26.dp)
-                            .height(26.dp)
+                        modifier = Modifier.size(40.dp,40.dp)
                     )
                 },
-                selectedContentColor = GW_Green200,
+                selectedContentColor = GW_Green100,
                 unselectedContentColor = Color.Gray,
                 selected = currentRoute == item.screenRoute,
                 alwaysShowLabel = false,

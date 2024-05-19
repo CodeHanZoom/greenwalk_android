@@ -1,3 +1,5 @@
+import android.app.Activity
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,6 +17,7 @@ import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -64,8 +68,11 @@ fun PartnersList(partners: List<PartnersResponseBody>) {
 fun PartnersItem(partner: PartnersResponseBody) {
     val viewModel = DonationViewModel() // DonationViewModel 초기화
     var bottomSheetVisible by remember { mutableStateOf(false) }
-
-    Card(modifier = Modifier.fillMaxWidth()) {
+    val context = LocalContext.current
+    Card(
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        modifier = Modifier.fillMaxWidth()
+    ) {
         Column(
             modifier = Modifier
                 .background(Color.White)
@@ -100,7 +107,7 @@ fun PartnersItem(partner: PartnersResponseBody) {
                     onConfirm = { amount ->
                         // 여기에서 amount를 사용하여 기부 액션을 수행합니다.
 //                        Log.d("Donation", "기부처: ${partner.name}, 금액: $amount")
-                        viewModel.fetchDonate(partner.id, amount) // DonationViewModel의 donate 호출
+                        viewModel.fetchDonate(context,partner.id, amount) // DonationViewModel의 donate 호출
                         bottomSheetVisible = false
                     }
                 )
