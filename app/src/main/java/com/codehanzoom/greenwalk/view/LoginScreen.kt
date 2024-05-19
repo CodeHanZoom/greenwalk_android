@@ -38,8 +38,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.codehanzoom.greenwalk.R
 import com.codehanzoom.greenwalk.compose.MaxWidthButton
-import com.codehanzoom.greenwalk.compose.TopBar
 import com.codehanzoom.greenwalk.model.LoginRequestBody
+import com.codehanzoom.greenwalk.ui.theme.GW_Green100
 import com.codehanzoom.greenwalk.ui.theme.GW_Red200
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 import com.codehanzoom.greenwalk.viewModel.LoginViewModel
@@ -55,8 +55,7 @@ fun LoginScreen(navController: NavHostController) {
         modifier = Modifier
             .fillMaxSize()
     ) {
-        TopBar(title = "", navController = navController)
-        Spacer(modifier = Modifier.height(60.dp))
+        Spacer(modifier = Modifier.height(120.dp))
         Box (
             modifier = Modifier
                 .fillMaxWidth(),
@@ -67,13 +66,13 @@ fun LoginScreen(navController: NavHostController) {
                 contentDescription = null
             )
         }
-        Spacer(modifier = Modifier.height(230.dp))
+        Spacer(modifier = Modifier.height(220.dp))
         LoginTextField(
             title = "이메일",
             value = email,
             onValueChange = { email = it }
         )
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(35.dp))
         LoginTextField(
             title = "비밀번호",
             value = password,
@@ -92,7 +91,7 @@ fun LoginScreen(navController: NavHostController) {
                 )
             }
         }
-        Spacer(modifier = Modifier.height(80.dp))
+        Spacer(modifier = Modifier.height(60.dp))
         MaxWidthButton(title = "로그인") {
 
             if(email.isEmpty() || password.isEmpty()) {
@@ -106,7 +105,7 @@ fun LoginScreen(navController: NavHostController) {
                 LoginViewModel(userData).retrofitWork(navController=navController)
             }
         }
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(15.dp))
         BottomContainer(navController = navController)
     }
 }
@@ -146,10 +145,12 @@ fun LoginTextField(title: String, value: String, onValueChange: (String) -> Unit
         colors = TextFieldDefaults.colors(
             unfocusedContainerColor = Color.Transparent,
             focusedContainerColor = Color.Transparent,
-            unfocusedPlaceholderColor = Color(0xFFBDBDBD),
-            focusedPlaceholderColor = Color(0xFFBDBDBD),
-            unfocusedIndicatorColor = Color(0xFFBDBDBD),
-            focusedIndicatorColor = Color(0xFFBDBDBD)
+            unfocusedPlaceholderColor = Color.Black,
+            focusedPlaceholderColor = Color.Black,
+            unfocusedIndicatorColor = Color.Black,
+            focusedIndicatorColor = GW_Green100,
+            focusedTextColor = Color.Black,
+            unfocusedTextColor = Color.Black
         )
     )
 }
