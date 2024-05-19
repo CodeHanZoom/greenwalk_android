@@ -68,7 +68,7 @@ fun MypageScreen(navController: NavHostController) {
 
     Scaffold(
         topBar = {
-            areaHeader()
+            AreaHeader()
         },
         bottomBar = {
             BottomNavigation(navController = navController)
@@ -237,7 +237,7 @@ fun MypageScreen(navController: NavHostController) {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun PreviewMyPageScreen() {
     GreenWalkTheme {
