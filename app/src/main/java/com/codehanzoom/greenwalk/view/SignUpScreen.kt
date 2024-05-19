@@ -1,7 +1,6 @@
 package com.codehanzoom.greenwalk.view
 
 import android.util.Patterns
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,14 +29,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.codehanzoom.greenwalk.model.SignUpRequestBody
 import com.codehanzoom.greenwalk.compose.MaxWidthButton
 import com.codehanzoom.greenwalk.compose.TopBar
+import com.codehanzoom.greenwalk.model.SignUpRequestBody
 import com.codehanzoom.greenwalk.ui.theme.GW_Green100
 import com.codehanzoom.greenwalk.ui.theme.GW_Red200
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 import com.codehanzoom.greenwalk.viewModel.SignupViewModel
-import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 @Composable
@@ -64,7 +62,6 @@ fun SignUpScreen(navController: NavHostController) {
     ) {
         TopBar(title = "회원가입", navController = navController)
         Divider()
-
         Spacer(modifier = Modifier.height(30.dp))
         SignUpTextField(
             title = "이메일",
@@ -116,7 +113,7 @@ fun SignUpScreen(navController: NavHostController) {
             value = name,
             onValueChange = { name = it }
         )
-        Spacer(modifier = Modifier.height(50.dp))
+//        Spacer(modifier = Modifier.height(50.dp))
         Column(
             Modifier
                 .padding(horizontal = 30.dp)
@@ -131,12 +128,7 @@ fun SignUpScreen(navController: NavHostController) {
                 )
             }
         }
-    }
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 700.dp)
-    ) {
+        Spacer(modifier = Modifier.height(110.dp))
         MaxWidthButton(title = "가입하기") {
             // 공백 확인
             if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || name.isEmpty()) {
@@ -198,10 +190,12 @@ fun SignUpTextField(title: String, value: String, onValueChange: (String) -> Uni
         colors = TextFieldDefaults.colors(
             unfocusedContainerColor = Color.Transparent,
             focusedContainerColor = Color.Transparent,
-            unfocusedPlaceholderColor = Color(0xFFBDBDBD),
-            focusedPlaceholderColor = Color(0xFFBDBDBD),
-            unfocusedIndicatorColor = Color(0xFFBDBDBD),
-            focusedIndicatorColor = Color(0xFFBDBDBD)
+            unfocusedPlaceholderColor = Color.Black,
+            focusedPlaceholderColor = Color.Black,
+            unfocusedIndicatorColor = Color.Black,
+            focusedIndicatorColor = GW_Green100,
+            focusedTextColor = Color.Black,
+            unfocusedTextColor = Color.Black
         )
     )
 }
