@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Divider
@@ -37,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.codehanzoom.greenwalk.R
+import com.codehanzoom.greenwalk.compose.LargeButton
 import com.codehanzoom.greenwalk.compose.MaxWidthButton
 import com.codehanzoom.greenwalk.model.LoginRequestBody
 import com.codehanzoom.greenwalk.ui.theme.GW_Green100
@@ -55,18 +57,19 @@ fun LoginScreen(navController: NavHostController) {
         modifier = Modifier
             .fillMaxSize()
     ) {
-        Spacer(modifier = Modifier.height(120.dp))
+        Spacer(modifier = Modifier.height(60.dp))
         Box (
             modifier = Modifier
                 .fillMaxWidth(),
             contentAlignment = Alignment.Center
         ){
             Image(
-                painter = painterResource(id = R.drawable.ic_logo),
-                contentDescription = null
+                painter = painterResource(id = R.drawable.logo_greenwalk),
+                contentDescription = null,
+                modifier = Modifier.size(250.dp, 200.dp)
             )
         }
-        Spacer(modifier = Modifier.height(220.dp))
+        Spacer(modifier = Modifier.height(100.dp))
         LoginTextField(
             title = "이메일",
             value = email,
@@ -91,23 +94,13 @@ fun LoginScreen(navController: NavHostController) {
                 )
             }
         }
-        Spacer(modifier = Modifier.height(60.dp))
-        MaxWidthButton(title = "로그인") {
-
-            if(email.isEmpty() || password.isEmpty()) {
-                isEmpty = true
-                errorMessage = "이메일 또는 비밀번호를 다시 확인해 주세요."
-            } else {
-                isEmpty = false
-                errorMessage = ""
-
-                val userData = LoginRequestBody(email, password)
-                LoginViewModel(userData).retrofitWork(navController=navController)
-            }
-        }
-        Spacer(modifier = Modifier.height(15.dp))
-        BottomContainer(navController = navController)
     }
+    LoginButton(
+        navController = navController,
+        email = email,
+        password = password,
+        onErrorMessageChange = { errorMessage = it; isEmpty = it.isNotEmpty() }
+    )
 }
 
 @Composable
@@ -196,6 +189,34 @@ fun BottomContainer(navController: NavHostController) {
     }
 }
 
+@Composable
+fun LoginButton(
+    navController: NavHostController,
+    email: String,
+    password: String,
+    onErrorMessageChange: (String) -> Unit
+) {
+    Box(
+        contentAlignment = Alignment.BottomCenter,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = 25.dp)
+    ) {
+        Column {
+            MaxWidthButton(title = "로그인") {
+                if (email.isEmpty() || password.isEmpty()) {
+                    onErrorMessageChange("이메일 또는 비밀번호를 다시 확인해 주세요.")
+                } else {
+                    onErrorMessageChange("")
+                    val userData = LoginRequestBody(email, password)
+                    LoginViewModel(userData).retrofitWork(navController = navController)
+                }
+            }
+        Spacer(modifier = Modifier.height(15.dp))
+            BottomContainer(navController = navController)
+        }
+    }
+}
 @Preview(showBackground = true)
 @Composable
 fun LoginActivityPreview() {
