@@ -1,4 +1,4 @@
-package com.codehanzoom.greenwalk.compose
+package com.codehanzoom.greenwalk.utils
 
 import android.os.Build
 import androidx.annotation.RequiresApi

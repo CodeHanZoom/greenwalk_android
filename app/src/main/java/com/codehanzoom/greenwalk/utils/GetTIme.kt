@@ -1,4 +1,4 @@
-package com.codehanzoom.greenwalk.compose
+package com.codehanzoom.greenwalk.utils
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
