@@ -48,7 +48,7 @@ fun PartnersListScreen() {
     val partners by viewModel.partners.observeAsState(initial = emptyList())
 
     Column(
-        modifier = Modifier.padding(bottom=100.dp)
+        modifier = Modifier.fillMaxWidth().height(350.dp)
     ) {
         PartnersList(partners)
     }
@@ -70,7 +70,7 @@ fun PartnersItem(partner: PartnersResponseBody) {
     var bottomSheetVisible by remember { mutableStateOf(false) }
     val context = LocalContext.current
     Card(
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(
@@ -91,7 +91,7 @@ fun PartnersItem(partner: PartnersResponseBody) {
                         fontSize = 20.sp
                     )
                     Text(
-                        text = "${partner.totalDonationAmount}P",
+                        text = "지금까지 모인 포인트 ${partner.totalDonationAmount}P",
                         fontFamily = inter_bold,
                         color = Color.Gray,
                         fontSize = 14.sp
