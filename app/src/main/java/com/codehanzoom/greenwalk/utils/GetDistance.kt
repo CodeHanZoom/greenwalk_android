@@ -1,4 +1,4 @@
-package com.codehanzoom.greenwalk.compose
+package com.codehanzoom.greenwalk.utils
 
 import android.Manifest
 import android.app.Activity

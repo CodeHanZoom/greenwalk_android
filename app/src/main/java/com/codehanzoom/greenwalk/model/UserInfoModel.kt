@@ -8,6 +8,7 @@ data class UserInfoResponseBody(
     val totalDonation: Int,
     val totalStep: Int,
     val totalTrashCount: Int,
-    val totalWalkingDistance: Double
+    val totalWalkingDistance: Double,
+    val accumulatedPoint: Int
 )
 

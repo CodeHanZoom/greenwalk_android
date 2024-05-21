@@ -14,7 +14,7 @@ import com.codehanzoom.greenwalk.nav.BottomNavigation
 fun  MarketScreen(navController: NavHostController) {
         Scaffold(
                 topBar = {
-                        areaHeader()
+                        AreaHeader()
                 },
                 bottomBar = {
                         BottomNavigation(navController = navController)

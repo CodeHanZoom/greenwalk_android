@@ -18,7 +18,7 @@ import kotlinx.coroutines.withContext
 
 
 class LoginViewModel(private val userInfo: LoginRequestBody) {
-
+    val TAG = "Login"
     fun retrofitWork(
         navController: NavHostController,
     ) {
@@ -50,7 +50,7 @@ class LoginViewModel(private val userInfo: LoginRequestBody) {
                                 else -> {/* 로그인 실패 api 추가되면 구현 */}
                             }
                         } else {
-                            Log.d("로그인 / 통신오류 : ", response.body().toString())
+                            Log.d(TAG, response.body().toString())
                         }
                     }
                 }
