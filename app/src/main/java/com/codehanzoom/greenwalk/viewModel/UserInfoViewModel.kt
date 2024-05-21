@@ -12,6 +12,7 @@ class UserInfoViewModel : ViewModel() {
         var totalStep = 0
         var totalTrashCount = 0
         var totalWalkingDistance: Double = 0.0
+        var accumulatedPoint: Int = 0
     }
 
     // id getter / setter
@@ -86,4 +87,13 @@ class UserInfoViewModel : ViewModel() {
         totalWalkingDistance = _totalWalkingDistance
     }
 
+
+    // accumulatedPoint getter / setter
+    fun getAccumulatedPoint(): Int {
+        return accumulatedPoint
+    }
+
+    fun setAccumulatedPoint(_accumulatedPoint: Int) {
+        accumulatedPoint = _accumulatedPoint
+    }
 }

@@ -4,5 +4,6 @@ data class DonationRecord (
     var id: Int,
     var userName: String,
     var partnerName: String,
-    var donationAmount: Int
+    var donationAmount: Int,
+    var createDate: String
 )
