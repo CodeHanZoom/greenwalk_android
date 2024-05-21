@@ -1,6 +1,8 @@
 package com.codehanzoom.greenwalk.view
 
+import android.text.BoringLayout
 import android.util.Patterns
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,10 +33,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.codehanzoom.greenwalk.compose.MaxWidthButton
 import com.codehanzoom.greenwalk.compose.TopBar
+import com.codehanzoom.greenwalk.model.LoginRequestBody
 import com.codehanzoom.greenwalk.model.SignUpRequestBody
 import com.codehanzoom.greenwalk.ui.theme.GW_Green100
 import com.codehanzoom.greenwalk.ui.theme.GW_Red200
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
+import com.codehanzoom.greenwalk.viewModel.LoginViewModel
 import com.codehanzoom.greenwalk.viewModel.SignupViewModel
 import java.util.regex.Pattern
 
@@ -61,7 +65,7 @@ fun SignUpScreen(navController: NavHostController) {
         modifier = Modifier.fillMaxSize()
     ) {
         TopBar(title = "회원가입", navController = navController)
-        Divider()
+        Divider(thickness = 0.5.dp, color = Color.Gray)
         Spacer(modifier = Modifier.height(30.dp))
         SignUpTextField(
             title = "이메일",
@@ -128,23 +132,33 @@ fun SignUpScreen(navController: NavHostController) {
                 )
             }
         }
-        Spacer(modifier = Modifier.height(110.dp))
-        MaxWidthButton(title = "가입하기") {
-            // 공백 확인
-            if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || name.isEmpty()) {
-                isEmpty = true
-                errorMessage = "모든 항목을 입력해 주세요."
-            } else {
-                isEmpty = false
-                errorMessage = ""
-
-                if(isEmailValid && isPasswordValid && isConfirmPasswordValid) {
-                    val userData = SignUpRequestBody(email, password, name)
-                    SignupViewModel(userData).retrofitWork(navController = navController)
-                }
-            }
-        }
+//        Spacer(modifier = Modifier.height(110.dp))
+//        MaxWidthButton(title = "가입하기") {
+//            // 공백 확인
+//            if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || name.isEmpty()) {
+//                isEmpty = true
+//                errorMessage = "모든 항목을 입력해 주세요."
+//            } else {
+//                isEmpty = false
+//                errorMessage = ""
+//
+//                if(isEmailValid && isPasswordValid && isConfirmPasswordValid) {
+//                    val userData = SignUpRequestBody(email, password, name)
+//                    SignupViewModel(userData).retrofitWork(navController = navController)
+//                }
+//            }
+//        }
     }
+    SignUpButton(
+        navController,
+        email, password,
+        confirmPassword,
+        name,
+        onErrorMessageChange = { errorMessage = it; isEmpty = it.isNotEmpty() },
+        isEmailValid,
+        isPasswordValid,
+        isConfirmPasswordValid
+    )
 }
 
 
@@ -210,6 +224,39 @@ fun isPasswordValid(password: String): Boolean {
     val pattern = Pattern.compile(
         "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&+=])(?=\\S+\$).{8,}\$")
     return pattern.matcher(password).matches()
+}
+
+@Composable
+fun SignUpButton(
+    navController: NavHostController,
+    email: String,
+    password: String,
+    confirmPassword: String,
+    name: String,
+    onErrorMessageChange: (String) -> Unit,
+    isEmailValid: Boolean,
+    isPasswordValid: Boolean,
+    isConfirmPasswordValid: Boolean
+) {
+    Box(
+        contentAlignment = Alignment.BottomCenter,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = 60.dp)
+    ) {
+        MaxWidthButton(title = "가입하기") {
+            // 공백 확인
+            if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || name.isEmpty()) {
+                onErrorMessageChange("모든 항목을 입력해 주세요.")
+            } else {
+                onErrorMessageChange("")
+                if(isEmailValid && isPasswordValid && isConfirmPasswordValid) {
+                    val userData = SignUpRequestBody(email, password, name)
+                    SignupViewModel(userData).retrofitWork(navController = navController)
+                }
+            }
+        }
+    }
 }
 
 @Preview(showBackground = true)
