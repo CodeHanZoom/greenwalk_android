@@ -1,13 +1,15 @@
 package com.codehanzoom.greenwalk.view
 
-import com.codehanzoom.greenwalk.compose.GetDistance
-import com.codehanzoom.greenwalk.compose.GetStep
-import com.codehanzoom.greenwalk.compose.GetTime
+import com.codehanzoom.greenwalk.utils.GetDistance
+import com.codehanzoom.greenwalk.utils.GetStep
+import com.codehanzoom.greenwalk.utils.GetTime
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,11 +18,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Divider
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -38,26 +42,23 @@ import com.codehanzoom.greenwalk.ui.theme.inter_bold
 @Composable
 fun PloggingScreen(navController: NavHostController) {
 
-
     Column(
-        modifier = Modifier
-            .fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TopBar(title = "플로깅", navController = navController)
-
+        Divider(thickness = 0.5.dp, color = Color.Gray)
         Column(
             modifier = Modifier
-                .height(240.dp)
                 .background(GW_Green100)
-                .fillMaxSize()
-                .padding(vertical = 10.dp, horizontal = 20.dp)
+                .padding(20.dp)
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(80.dp)
+                    .height(80.dp
+                    )
             ) {
                 // 시간 컴포즈
                 GetTime()
@@ -71,7 +72,8 @@ fun PloggingScreen(navController: NavHostController) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(80.dp)
+                    .height(80.dp
+                    )
             ) {
                 // 이동거리 컴포즈
                 GetDistance()
@@ -79,12 +81,13 @@ fun PloggingScreen(navController: NavHostController) {
                     text = "거리",
                     fontFamily = inter_bold,
                     color = GW_Black100,
-                    fontSize = 12.sp)
+                    fontSize = 12.sp
+                )
             }
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(80.dp)
+                    .height(70.dp)
             ) {
                 // 걸음수 컴포즈
                 GetStep()
@@ -92,11 +95,10 @@ fun PloggingScreen(navController: NavHostController) {
                     text = "걸음수",
                     fontFamily = inter_bold,
                     color = GW_Black100,
-                    fontSize = 12.sp)
+                    fontSize = 12.sp
+                )
             }
         }
-        Spacer(modifier = Modifier.height(20.dp))
-
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -108,30 +110,18 @@ fun PloggingScreen(navController: NavHostController) {
 }
 @Composable
 fun StopButton(navController: NavHostController) {
-    // 화면정보 불러오기
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.dp
-    val screenHeight = configuration.screenHeightDp.dp
-    // x, y 좌표 설정
-    // x: 전체 width에서 width 70dp를 뺀 후 1/2 gap
-    // y: height 90% 기준으로 설정
-    val newX = (screenWidth.value - 70) / 2
-    val newY = screenHeight.value * 0.9
-
-    FloatingActionButton(
+    Box(
+        contentAlignment = Alignment.BottomCenter ,
         modifier = Modifier
-            .width(70.dp)
-            .height(70.dp)
-            .offset(newX.toInt().dp, newY.toInt().dp),
-        onClick = {
-            navController.navigate("RecordScreen") {
-            }
-        },
-        containerColor = GW_Red100
+            .fillMaxSize()
+            .padding(bottom = 60.dp)
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_plogging_stop),
-            contentDescription = "ic_plogging_stop"
+            contentDescription = "Plogging Stop",
+            modifier = Modifier.clickable {
+                navController.navigate("RecordScreen")
+            }
         )
     }
 }
