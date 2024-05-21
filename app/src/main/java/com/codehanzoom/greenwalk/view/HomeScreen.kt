@@ -1,9 +1,6 @@
 package com.codehanzoom.greenwalk.view
 
 import PartnersItem
-import PartnersList
-import PartnersListScreen
-import PartnersItem
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -11,7 +8,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -22,8 +18,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -45,23 +39,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.graphics.toColorInt
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.codehanzoom.greenwalk.MainActivity
 import com.codehanzoom.greenwalk.R
 import com.codehanzoom.greenwalk.compose.AttendanceArea
-import com.codehanzoom.greenwalk.compose.DonationListArea
-import com.codehanzoom.greenwalk.model.PartnersResponseBody
 import com.codehanzoom.greenwalk.model.UserInfoResponseBody
 import com.codehanzoom.greenwalk.nav.BottomNavigation
 import com.codehanzoom.greenwalk.ui.theme.GW_Green100
@@ -71,6 +60,7 @@ import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 import com.codehanzoom.greenwalk.ui.theme.inter_bold
 import com.codehanzoom.greenwalk.ui.theme.inter_regular
 import com.codehanzoom.greenwalk.utils.RetrofitClient
+import com.codehanzoom.greenwalk.utils.convertMetersToKilometers
 import com.codehanzoom.greenwalk.utils.getGrade
 import com.codehanzoom.greenwalk.viewModel.PartnersViewModel
 import com.codehanzoom.greenwalk.viewModel.UserInfoViewModel
@@ -106,6 +96,7 @@ fun  HomeScreen(navController: NavHostController) {
                                 viewModel.setTotalStep(userInfo.totalStep)
                                 viewModel.setTotalTrashCount(userInfo.totalTrashCount)
                                 viewModel.setTotalWalkingDistance(userInfo.totalWalkingDistance)
+                                viewModel.setAccumulatedPoint(userInfo.accumulatedPoint)
                         }
                         Log.d("viewmodel test", viewModel.getName())
                         Log.d("HomeScreen", accessToken.toString())
@@ -132,7 +123,7 @@ fun  HomeScreen(navController: NavHostController) {
             BottomNavigation(navController)
         }
     ) { innerPadding ->
-        Divider(color = Color.Gray)
+        Divider(thickness = 0.5.dp, color = Color.Gray)
         Box(
             modifier = Modifier
                 .padding(innerPadding)
@@ -149,21 +140,20 @@ fun  HomeScreen(navController: NavHostController) {
                     ploggingCount = viewModel.getTotalTrashCount(),
                     totalPoint = viewModel.getTotalPoint(),
                     totalWalkingDistance = viewModel.getTotalWalkingDistance(),
-                    grade = getGrade(viewModel.getTotalPoint()))
+                    grade = getGrade(viewModel.getAccumulatedPoint()))
 
                 AttendanceArea()
 
                 areaCheer(name = userInfo?.name)
 
                 Column(
-                    modifier = Modifier.padding(bottom = 100.dp)
+                    modifier = Modifier.padding(start = 10.dp, end = 10.dp, bottom = 100.dp)
                 ) {
                     partners.forEach { partner ->
                         PartnersItem(partner)
                         Spacer(modifier = Modifier.height(8.dp))
                     }
                 }
-
             }
         }
     }
@@ -174,16 +164,17 @@ fun  HomeScreen(navController: NavHostController) {
 fun AreaHeader() {
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(20.dp),
+            .padding(top = 10.dp, bottom = 10.dp, start = 0.dp, end = 20.dp)
+            .height(60.dp)
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = "GreenWalk",
-            color = GW_Green100,
-            fontSize = 32.sp,
-            fontWeight = FontWeight.Bold
+        Image(
+            painter = painterResource(id = R.drawable.logo_greenwalk_small),
+            contentDescription = null,
+            modifier = Modifier
+                .size(250.dp, 60.dp)
         )
         Image(
             painter = painterResource(R.drawable.ic_notifications),
@@ -200,15 +191,18 @@ fun areaMyInfo(name: String?="나희수",
                totalWalkingDistance: Double?=-1.0,
                grade: String?="Bronze") {
     Card(
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2
+            .dp),
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp),
         colors = CardDefaults.cardColors(Color.White)
     ) {
+
         Column(
             modifier = Modifier.padding(10.dp)
         ) {
+
             Text(name + "님",
                 fontFamily = inter_bold,
                 fontSize = 16.sp
@@ -258,29 +252,46 @@ fun areaMyInfo(name: String?="나희수",
                     )
             }
             Spacer(modifier = Modifier.height(10.dp))
-            Text(
-                "$totalPoint P",
-                fontSize = 16.sp,
-                color = GW_Green100,
-                fontFamily = inter_bold
-            )
-            Text("보유 포인트",
-                color = Color.Gray,
-                fontFamily = inter_bold,
-                fontSize = 12.sp
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            Text(
-                "$totalWalkingDistance Km",
-                fontSize = 16.sp,
-                color = GW_Green100,
-                fontFamily = inter_bold
-            )
-            Text("플로깅 거리",
-                color = Color.Gray,
-                fontFamily = inter_bold,
-                fontSize = 12.sp
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column {
+                    Text(
+                        "$totalPoint"+"P",
+                        fontSize = 16.sp,
+                        color = GW_Green100,
+                        fontFamily = inter_bold
+                    )
+                    Text("보유 포인트",
+                        color = Color.Gray,
+                        fontFamily = inter_bold,
+                        fontSize = 12.sp
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Text(
+                        text = String.format("%.2f",
+                            totalWalkingDistance?.let { convertMetersToKilometers(it) }
+                        )+"Km",
+                        fontSize = 16.sp,
+                        color = GW_Green100,
+                        fontFamily = inter_bold
+                    )
+                    Text("플로깅 거리",
+                        color = Color.Gray,
+                        fontFamily = inter_bold,
+                        fontSize = 12.sp
+                    )
+                }
+                Column {
+                    Image(
+                        painter = painterResource(id = R.drawable.image_greenwalk),
+                        contentDescription = null,
+                        modifier = Modifier.size(100.dp,100.dp)
+                    )
+                }
+            }
         }
     }
 }
@@ -343,10 +354,11 @@ fun ploggingButton(navController: NavHostController) {
 }
 
 @Composable
-@Preview
+@Preview(showBackground = true)
 fun PreviewHome() {
     GreenWalkTheme {
         val navController = rememberNavController()
-        HomeScreen(navController)
+//        HomeScreen(navController)
+        areaMyInfo()
     }
 }
