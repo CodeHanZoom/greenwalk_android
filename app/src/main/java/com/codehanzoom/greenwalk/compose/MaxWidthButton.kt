@@ -1,5 +1,6 @@
 package com.codehanzoom.greenwalk.compose
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
@@ -19,6 +20,7 @@ import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 @Composable
 fun MaxWidthButton(title: String, onClick: () -> Unit) {
     Button(
+        contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp),
         shape = RectangleShape,
         colors = ButtonDefaults.buttonColors(
             containerColor = Color(0xff8CB369)
