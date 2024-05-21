@@ -28,7 +28,7 @@ import java.util.Date
 @Composable
 fun AttendanceArea() {
     Card(
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp),
