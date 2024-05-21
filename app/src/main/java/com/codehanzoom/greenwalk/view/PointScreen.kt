@@ -17,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,11 +37,6 @@ import com.codehanzoom.greenwalk.viewModel.UserInfoViewModel
 @Composable
 fun PointScreen(navController: NavHostController) {
     val viewModel = UserInfoViewModel()
-
-    val TAG = "PointScreen"
-
-    val pointState = remember { mutableStateOf(0) }
-    val trashCountState = remember { mutableStateOf(0) }
     val ploggingViewModel = PloggingInfoViewModel()
 
     // UI
@@ -48,7 +44,7 @@ fun PointScreen(navController: NavHostController) {
         modifier = Modifier.fillMaxSize()
     ) {
         TopBar(title = "포인트 적립", navController = navController)
-        Divider()
+        Divider(thickness = 0.5.dp, color = Color.Gray)
         Spacer(modifier = Modifier.height(30.dp))
 
         Column(
@@ -118,22 +114,25 @@ fun PointScreen(navController: NavHostController) {
                     fontSize = 20.sp
                 )
             }
-            Spacer(modifier = Modifier.height(60.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             PartnersListScreen()
         }
     }
+    GoMainButton(navController)
+}
+@Composable
+fun GoMainButton(navController: NavHostController) {
     Box(
-        contentAlignment = Alignment.Center,
+        contentAlignment = Alignment.BottomCenter ,
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 700.dp)
+            .fillMaxSize()
+            .padding(bottom = 60.dp)
     ) {
         LargeButton(title = "메인으로") {
             navController.navigate("HomeScreen")
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
