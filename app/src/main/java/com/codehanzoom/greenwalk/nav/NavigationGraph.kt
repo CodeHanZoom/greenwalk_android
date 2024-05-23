@@ -1,6 +1,6 @@
 package com.codehanzoom.greenwalk.nav
 
-import StartScreen
+import SplashScreen
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.height
@@ -38,10 +38,13 @@ import com.codehanzoom.greenwalk.view.SignUpScreen
 fun NavigationGraph() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "LoginScreen") {
-
-        composable("StartScreen") {
-            StartScreen(navController = navController)
+    NavHost(navController = navController, startDestination = "splash") {
+        composable("splash") {
+            SplashScreen {
+                navController.navigate("LoginScreen") {
+                    popUpTo("splash") { inclusive = true }
+                }
+            }
         }
         composable("HomeScreen") {
             HomeScreen(navController = navController)

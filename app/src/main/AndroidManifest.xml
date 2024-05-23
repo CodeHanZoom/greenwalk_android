@@ -37,43 +37,13 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.App.Starting">
+            android:theme="@style/Theme.GreenWalk">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <!--
-                The app needs to handle this intent and display an appropriate privacy policy
-                explaining how the user's data will be used and handled.
-
-                This intent is sent to the app when the user clicks on the "privacy policy" link
-                in the Health Connect permissions dialog.
-            -->
-            <intent-filter>
-                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
-            </intent-filter>
-
-            <!-- Permission handling for Android 14 -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE"/>
-                <category android:name="android.intent.category.HEALTH_PERMISSIONS"/>
-            </intent-filter>
         </activity>
     </application>
-
-    <queries>
-        <package android:name="com.google.android.apps.healthdata" />
-
-        <!--
-             This is required such that the app can query and resolve packages that have written
-             Health Connect data, and obtain their friendly App Name and Icon to show for data
-             attribution in the app
-        -->
-        <intent>
-            <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
-        </intent>
-    </queries>
-
 </manifest>

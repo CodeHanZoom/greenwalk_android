@@ -4,6 +4,7 @@ data class PartnersResponseBody(
     val id: Int,
     val name: String,
     val introduction: String,
-    val totalDonationAmount: Int
+    val totalDonationAmount: Int,
+    val imageUrl: String
 )
 

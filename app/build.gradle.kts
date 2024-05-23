@@ -120,9 +120,6 @@ dependencies {
     // Coroutine
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
 
-    // Splash
-    implementation ("androidx.core:core-splashscreen:1.0.1")
-
     // 네이버 지도 SDK
     implementation ("io.github.fornewid:naver-map-compose:1.7.0")
     implementation ("io.github.fornewid:naver-map-location:21.0.2")
@@ -140,4 +137,6 @@ dependencies {
     // image process library
     implementation ("io.coil-kt:coil:2.1.0")
     implementation ("io.coil-kt:coil-compose:2.1.0")
+
+
 }
