@@ -31,7 +31,7 @@ import kotlinx.coroutines.delay
 fun SplashScreen(onTimeout: () -> Unit) {
     // 스플래시 화면 지속 시간 설정
     LaunchedEffect(Unit) {
-        delay(1000) // 3초
+        delay(1000) // 1초
         onTimeout()
     }
 
