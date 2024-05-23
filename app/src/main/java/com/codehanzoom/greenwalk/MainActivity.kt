@@ -6,7 +6,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.codehanzoom.greenwalk.nav.NavigationGraph
 import com.codehanzoom.greenwalk.ui.theme.GreenWalkTheme
 import com.codehanzoom.greenwalk.utils.CameraPermissionHandler
@@ -34,7 +33,7 @@ class MainActivity : ComponentActivity() {
 
         // splash screen 적용
         // setContent 전(에 실행
-        installSplashScreen()
+//        installSplashScreen()
 
         setContent {
             GreenWalkTheme {
