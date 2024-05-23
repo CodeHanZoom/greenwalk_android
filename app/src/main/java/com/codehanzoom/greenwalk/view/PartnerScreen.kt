@@ -1,5 +1,4 @@
-import android.app.Activity
-import android.content.Context
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
@@ -28,11 +28,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.rememberAsyncImagePainter
 import com.codehanzoom.greenwalk.compose.SmallButton
 import com.codehanzoom.greenwalk.model.PartnersResponseBody
 import com.codehanzoom.greenwalk.ui.theme.GW_Black100
@@ -48,7 +50,9 @@ fun PartnersListScreen() {
     val partners by viewModel.partners.observeAsState(initial = emptyList())
 
     Column(
-        modifier = Modifier.fillMaxWidth().height(350.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(350.dp)
     ) {
         PartnersList(partners)
     }
@@ -83,6 +87,15 @@ fun PartnersItem(partner: PartnersResponseBody) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                // Image URL을 이용하여 이미지 표시
+                Image(
+                    painter = rememberAsyncImagePainter(model = partner.imageUrl),
+                    contentDescription = "icon",
+                    modifier = Modifier
+                        .size(40.dp),
+                    contentScale = ContentScale.Crop
+                )
+
                 Column {
                     Text(
                         text = partner.name,
